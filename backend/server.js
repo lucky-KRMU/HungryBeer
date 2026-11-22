@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import buyerRoutes from './routes/buyerRoutes.js';
@@ -69,6 +70,18 @@ app.get('/', (req, res) => {
   });
 });
 
+// Database connection readiness check middleware for /api routes
+app.use('/api', (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      success: false,
+      message: 'Database is currently connecting or unavailable. Please try again shortly.',
+      dbState: mongoose.connection.readyState
+    });
+  }
+  next();
+});
+
 // Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/buyer', buyerRoutes);
@@ -77,11 +90,26 @@ app.use('/api/seller', sellerRoutes);
 // Global Error Handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5001;
+let currentPort = Number(process.env.PORT) || 5001;
 
-const server = app.listen(PORT, () => {
-  console.log(`🍺 [HungryBeer Backend] Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
-});
+const startServer = (port) => {
+  const server = app
+    .listen(port, () => {
+      console.log(`🍺 [HungryBeer Backend] Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${port}`);
+    })
+    .on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.warn(`⚠️ Port ${port} is in use by another process. Attempting port ${port + 1}...`);
+        startServer(port + 1);
+      } else {
+        console.error(`[Server Error] ${err.message}`);
+      }
+    });
+
+  return server;
+};
+
+const server = startServer(currentPort);
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {

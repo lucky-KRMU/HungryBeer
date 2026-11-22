@@ -1,15 +1,26 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
+  const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hungrybeer';
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hungrybeer', {
-      serverSelectionTimeoutMS: 3000,
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000,
     });
-    console.log(`[MongoDB] Connected: ${conn.connection.host}`);
+    console.log(`🍺 [MongoDB] Connected successfully: ${conn.connection.host}`);
+    return conn;
   } catch (error) {
-    console.warn(`[MongoDB Warning] Direct connection failed: ${error.message}`);
-    console.warn(`[MongoDB Info] Server will continue running. Ensure MongoDB daemon is active on port 27017.`);
+    console.error(`❌ [MongoDB Error] Connection failed: ${error.message}`);
+    console.log(`🔄 [MongoDB] Retrying connection in 3 seconds...`);
+    setTimeout(connectDB, 3000);
   }
 };
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️ [MongoDB] Disconnected from database.');
+});
+
+mongoose.connection.on('reconnected', () => {
+  console.log('🔄 [MongoDB] Reconnected to database.');
+});
 
 export default connectDB;
