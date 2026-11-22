@@ -54,8 +54,12 @@ export default function App() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash === 'login' || hash === 'signup' || hash === 'seller') {
+      if (hash === 'login' || hash === 'signup') {
         setCurrentPage(hash);
+      } else if (hash === 'seller') {
+        // Only let sellers navigate to seller portal via hash
+        const token = localStorage.getItem('hungrybeer_token');
+        setCurrentPage(token ? 'seller' : 'login');
       } else if (!hash && (currentPage === 'login' || currentPage === 'signup' || currentPage === 'seller')) {
         setCurrentPage('home');
       }
@@ -267,14 +271,24 @@ export default function App() {
         onBackToHome={() => navigateTo('home')}
         onLoginSuccess={(userData) => {
           setUser(userData);
-          navigateTo('home');
+          // Sellers go directly to their portal; buyers stay on home
+          if (userData.role === 'seller') {
+            navigateTo('seller');
+          } else {
+            navigateTo('home');
+          }
         }}
       />
     );
   }
 
-  // Dedicated Seller Portal
+  // Dedicated Seller Portal — only accessible to authenticated sellers
   if (currentPage === 'seller') {
+    if (!user || user.role !== 'seller') {
+      // Redirect buyers and unauthenticated users away immediately
+      setTimeout(() => navigateTo(user ? 'home' : 'login'), 0);
+      return null;
+    }
     return <SellerDashboard onBackToBuyer={() => navigateTo('home')} />;
   }
 

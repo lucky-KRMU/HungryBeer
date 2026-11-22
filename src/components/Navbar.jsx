@@ -121,15 +121,17 @@ export default function Navbar({
           {/* Right Action Buttons */}
           <div className="flex items-center gap-3">
             
-            {/* Seller Portal Button */}
-            <button
-              onClick={() => onOpenAuth('seller')}
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-400/10 hover:bg-amber-400/20 rounded-xl border border-amber-500/30 transition-colors"
-              title="Open Brewery & Restaurant Manager"
-            >
-              <Store className="w-3.5 h-3.5" />
-              <span>Seller Portal</span>
-            </button>
+            {/* Seller Portal Button — only visible to logged-in sellers */}
+            {user?.role === 'seller' && (
+              <button
+                onClick={() => onOpenAuth('seller')}
+                className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-400/10 hover:bg-amber-400/20 rounded-xl border border-amber-500/30 transition-colors"
+                title="Open Brewery & Restaurant Manager"
+              >
+                <Store className="w-3.5 h-3.5" />
+                <span>Seller Portal</span>
+              </button>
+            )}
 
             {/* Cart Button */}
             <button
