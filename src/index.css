@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #0d0f12;
+    color: #f3f4f6;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111418;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b313a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+/* Custom Glows and Shimmers */
+.beer-glow {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
+}
+
+.beer-glow-sm {
+  box-shadow: 0 0 15px -3px rgba(245, 158, 11, 0.25);
+}
+
+.red-glow {
+  box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.3);
+}
+
+.custom-gradient-border {
+  border-image: linear-gradient(to right, #f59e0b, #ef4444) 1;
+}
