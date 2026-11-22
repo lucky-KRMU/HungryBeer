@@ -1,33 +1,86 @@
 import React, { useState } from 'react';
-import { X, Beer, Mail, Phone, Lock, Sparkles, Check } from 'lucide-react';
+import { api, setAuthToken } from '../services/api';
+import { X, Beer, Mail, Phone, Lock, Sparkles, Check, AlertCircle } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLoginSuccess }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = {
-      name: fullName || (emailOrPhone.split('@')[0] || 'Hungry Friend'),
-      email: emailOrPhone.includes('@') ? emailOrPhone : 'cheers@hungrybeer.com',
-      phone: !emailOrPhone.includes('@') ? emailOrPhone : '+91 98765 00000',
-    };
-    onLoginSuccess(user);
-    onClose();
+    setErrorMessage('');
+
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const trimmed = emailOrPhone.trim().toLowerCase();
+      const validEmail = trimmed.includes('@')
+        ? trimmed
+        : `${trimmed.replace(/[^a-z0-9]/g, '')}@hungrybeer.com`;
+
+      if (mode === 'signup') {
+        const res = await api.auth.register({
+          name: fullName.trim() || 'Hungry Friend',
+          email: validEmail,
+          password: password,
+          role: 'buyer'
+        });
+
+        if (res.success && res.user) {
+          setAuthToken(res.token);
+          onLoginSuccess(res.user);
+          onClose();
+        } else {
+          setErrorMessage(res.message || res.error || 'Registration failed');
+        }
+      } else {
+        const res = await api.auth.login({
+          email: validEmail,
+          password: password
+        });
+
+        if (res.success && res.user) {
+          setAuthToken(res.token);
+          onLoginSuccess(res.user);
+          onClose();
+        } else {
+          setErrorMessage(res.message || res.error || 'Invalid credentials');
+        }
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Error communicating with backend');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDemoLogin = () => {
-    const demoUser = {
-      name: 'Rohan Sharma',
-      email: 'rohan.sharma@example.com',
-      phone: '+91 98765 43210'
-    };
-    onLoginSuccess(demoUser);
-    onClose();
+  const handleDemoLogin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await api.auth.login({
+        email: 'buyer@hungrybeer.com',
+        password: 'password123'
+      });
+      if (res.success && res.user) {
+        setAuthToken(res.token);
+        onLoginSuccess(res.user);
+        onClose();
+      }
+    } catch (err) {
+      console.warn('Demo login error', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

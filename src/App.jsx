@@ -13,12 +13,36 @@ import AuthModal from './components/AuthModal';
 import AuthPage from './pages/AuthPage';
 import SellerDashboard from './pages/SellerDashboard';
 import Footer from './components/Footer';
+import { api, setAuthToken } from './services/api';
 import { LOCATIONS, RESTAURANTS, PROMO_COUPONS } from './data/mockData';
 import { Beer, Search, RotateCcw, Sparkles } from 'lucide-react';
 
 export default function App() {
   // Page Navigation ('home' | 'login' | 'signup')
   const [currentPage, setCurrentPage] = useState('home');
+
+  // User state restored from MongoDB backend
+  const [user, setUser] = useState(null);
+
+  // Restore authenticated session from backend on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('hungrybeer_token');
+      if (token) {
+        try {
+          const res = await api.auth.getMe();
+          if (res.success && res.user) {
+            setUser(res.user);
+          } else {
+            setAuthToken(null);
+          }
+        } catch (err) {
+          console.warn('Could not restore user from backend:', err.message);
+        }
+      }
+    };
+    fetchUser();
+  }, []);
 
   // Navigation & Location
   const [activeTab, setActiveTab] = useState('delivery'); // 'delivery' | 'dining' | 'nightlife'
@@ -65,7 +89,6 @@ export default function App() {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
-  const [user, setUser] = useState({ name: 'Alex Hunter', email: 'alex@hungrybeer.com' });
   const [orderSuccessData, setOrderSuccessData] = useState(null);
 
   // Cart State
@@ -268,7 +291,10 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={(mode) => navigateTo(mode)}
         user={user}
-        onLogout={() => setUser(null)}
+        onLogout={() => {
+          setUser(null);
+          setAuthToken(null);
+        }}
       />
 
       {/* 2. Zomato Tab Navigation (Delivery, Dining Out, Nightlife) */}

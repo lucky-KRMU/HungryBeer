@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { api, setAuthToken } from '../services/api';
 import { 
   Beer, 
   ArrowLeft, 
@@ -13,7 +14,8 @@ import {
   ShieldCheck, 
   Flame, 
   Gift, 
-  Clock 
+  Clock,
+  Store
 } from 'lucide-react';
 
 export default function AuthPage({ 
@@ -22,6 +24,7 @@ export default function AuthPage({
   onLoginSuccess 
 }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
+  const [role, setRole] = useState('buyer'); // 'buyer' | 'seller'
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -34,7 +37,7 @@ export default function AuthPage({
   const [rememberMe, setRememberMe] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -43,30 +46,75 @@ export default function AuthPage({
       return;
     }
 
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters.');
+      return;
+    }
+
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      // Ensure valid email address format
+      const trimmedInput = emailOrPhone.trim().toLowerCase();
+      const validEmail = trimmedInput.includes('@')
+        ? trimmedInput
+        : `${trimmedInput.replace(/[^a-z0-9]/g, '')}@hungrybeer.com`;
+
+      if (mode === 'signup') {
+        const res = await api.auth.register({
+          name: fullName.trim() || 'Hungry Friend',
+          email: validEmail,
+          password: password,
+          phone: phoneNumber.trim() || (!emailOrPhone.includes('@') ? emailOrPhone.trim() : ''),
+          role: role
+        });
+
+        if (res.success && res.user) {
+          setAuthToken(res.token);
+          onLoginSuccess(res.user);
+        } else {
+          setErrorMessage(res.message || res.error || 'Registration failed. Please check inputs.');
+        }
+      } else {
+        // Mode === 'login'
+        const res = await api.auth.login({
+          email: validEmail,
+          password: password
+        });
+
+        if (res.success && res.user) {
+          setAuthToken(res.token);
+          onLoginSuccess(res.user);
+        } else {
+          setErrorMessage(res.message || res.error || 'Invalid email or password.');
+        }
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Error communicating with backend server.');
+    } finally {
       setIsLoading(false);
-      const user = {
-        name: fullName || (emailOrPhone.split('@')[0] || 'Hungry Friend'),
-        email: emailOrPhone.includes('@') ? emailOrPhone : 'member@hungrybeer.com',
-        phone: phoneNumber || (!emailOrPhone.includes('@') ? emailOrPhone : '+91 98765 00000'),
-      };
-      onLoginSuccess(user);
-    }, 700);
+    }
   };
 
-  const handleDemoLogin = () => {
+  const handleDemoLogin = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    setErrorMessage('');
+    try {
+      const res = await api.auth.login({
+        email: 'buyer@hungrybeer.com',
+        password: 'password123'
+      });
+      if (res.success && res.user) {
+        setAuthToken(res.token);
+        onLoginSuccess(res.user);
+      } else {
+        setErrorMessage(res.message || 'Demo login failed');
+      }
+    } catch (err) {
+      setErrorMessage('Could not connect to backend server at http://localhost:5001');
+    } finally {
       setIsLoading(false);
-      const demoUser = {
-        name: 'Rohan Sharma',
-        email: 'rohan.sharma@hungrybeer.com',
-        phone: '+91 98765 43210',
-      };
-      onLoginSuccess(demoUser);
-    }, 400);
+    }
   };
 
   return (
@@ -201,7 +249,7 @@ export default function AuthPage({
             </div>
 
             {/* Heading */}
-            <div className="mb-5">
+            <div className="mb-4">
               <h2 className="text-xl sm:text-2xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
                 {mode === 'login' ? 'Welcome Back!' : 'Create Your Account'}
               </h2>
@@ -211,6 +259,36 @@ export default function AuthPage({
                   : 'Join today and get instant 25% discount voucher on your first order.'}
               </p>
             </div>
+
+            {/* Account Type Selector for Sign Up */}
+            {mode === 'signup' && (
+              <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-4 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => setRole('buyer')}
+                  className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    role === 'buyer'
+                      ? 'bg-zinc-800 text-amber-400 border border-amber-500/30 shadow'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Beer className="w-3.5 h-3.5" />
+                  <span>Buyer (Customer)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole('seller')}
+                  className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    role === 'seller'
+                      ? 'bg-zinc-800 text-amber-400 border border-amber-500/30 shadow'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Store className="w-3.5 h-3.5" />
+                  <span>Seller (Partner)</span>
+                </button>
+              </div>
+            )}
 
             {/* Error Banner */}
             {errorMessage && (
