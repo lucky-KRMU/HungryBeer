@@ -1,71 +1,126 @@
-# 🍺 HungryBeer - Food, Dining & Chilled Brews Platform
+# 🍺 HungryBeer - Full MERN Stack Platform
 
-**HungryBeer** is a high-octane ReactJS food & beverage platform styled with a bold **Yellow, Black & Red** theme celebrating craft beers, microbreweries, and gourmet pub food alongside classic delivery favorites.
-
----
-
-## 🎨 Theme & Brand Identity
-- **Primary Amber / Gold**: `#F59E0B`, `#FBBF24` (Golden frothy brew vibes)
-- **Deep Sleek Black / Dark Charcoal**: `#0D0F12`, `#181A20`, `#0A0B0E` (Nightlife & premium ambiance)
-- **Crimson Red Accents**: `#EF4444`, `#DC2626` (Badges, hot tags, discounts & alerts)
+**HungryBeer** is a full-stack MERN (MongoDB, Express, React, Node.js) platform built with **MVC (Model-View-Controller)** architecture in the backend and an energetic **Yellow, Black & Red** themed React frontend celebrating craft brews, microbreweries, and gourmet pub food alongside classic delivery favorites.
 
 ---
 
-## ✨ Features Included
+## 🏛️ System Architecture (MERN + MVC)
 
-1. **Header & Navigation (Zomato Style)**:
-   - HungryBeer logo with glowing amber brew stein & fork
-   - City/Area location picker (Connaught Place, Indiranagar, Bandra West, Koregaon Park, etc.)
-   - Live search across cuisines, brews, dishes, and restaurants
-   - Interactive Cart drawer toggle with real-time item counter
-   - User authentication modal (Login / Sign-up / One-Click Demo User)
-
-2. **Core Zomato Tabs**:
-   - 🚴 **Delivery**: Fast delivery for piping hot food and chilled growlers/cans under 30 mins
-   - 🍽️ **Dining Out**: Table reservation simulator & microbrewery taproom explorer
-   - 🍷 **Nightlife & Pubs**: Craft beer flights, DJ nights, happy hours & rooftop sundowners
-
-3. **Inspiration & Collections**:
-   - Circular cuisine bubbles with photos (Craft Beers, Gourmet Burgers, Woodfired Pizza, Crispy Wings, Biryani, BBQ, Tacos, Desserts)
-   - Curated city collections ("Top Microbreweries in Town", "Late Night Munchies", "Rooftop Sundowners", "Burger & Beer Combos")
-
-4. **Multi-Filter & Sorting Engine**:
-   - Craft Beer on Tap 🍺
-   - Pure Veg 🌱
-   - Rating 4.5+ ★
-   - Happy Hours 🔥
-   - Express Delivery (&lt;25m) ⚡
-   - Sorting: Popularity, Rating, Cost (Low to High / High to Low), Fastest Delivery
-
-5. **Restaurant Detail Modal & Table Booking**:
-   - Restaurant overview, verified tags, rating breakdown, timings, address & contact
-   - Interactive Menu with category filters, Veg/Non-Veg icons, Bestseller tags
-   - Add to Cart with quantity stepper `+ / -`
-   - **Table Reservation Simulator**: Select date, time slot, party size, and receive instant confirmation with booking ID
-
-6. **Cart Drawer & Checkout Flow**:
-   - Slide-over right drawer with bill summary
-   - Promo coupon code validator (Try `HUNGRYBEER`, `CHEERS50`, `FIRSTBREW`, `PARTYPACK`)
-   - Free delivery calculation & tax breakdown
-   - One-click checkout
-
-7. **Order Tracking & Celebration**:
-   - Confetti burst animation upon placing an order
-   - Live 3-step order tracker: Kitchen acceptance → Brewmaster packing → Rider on EV Scooter with live contact
-
----
-
-## 🚀 Getting Started
-
-To run the application locally:
-
-```bash
-# 1. Install dependencies (already installed)
-npm install
-
-# 2. Start the development server
-npm run dev
-
-# 3. Build for production
-npm run build
 ```
+Zomato/
+├── backend/                       # Dedicated Node.js & Express MVC Backend
+│   ├── config/                    # Database connection (Mongoose)
+│   │   └── db.js
+│   ├── models/                    # M (Models) in MVC
+│   │   ├── User.js                # Buyer / Seller / Admin with JWT & bcrypt
+│   │   ├── Restaurant.js          # Brewery / Restaurant profile & settings
+│   │   ├── MenuItem.js            # Craft beers, growlers, food dishes
+│   │   ├── Order.js               # Orders with live tracking status
+│   │   ├── TableBooking.js        # Brewery dine-in table reservations
+│   │   └── Review.js              # Ratings and customer reviews
+│   ├── controllers/               # C (Controllers) in MVC
+│   │   ├── authController.js      # Register, Login, Profile
+│   │   ├── buyer/                 # Buyer controllers
+│   │   │   ├── restaurantController.js
+│   │   │   ├── orderController.js
+│   │   │   ├── tableController.js
+│   │   │   └── reviewController.js
+│   │   └── seller/                # Seller controllers
+│   │       ├── restaurantController.js
+│   │       ├── menuController.js
+│   │       ├── orderController.js
+│   │       ├── tableController.js
+│   │       └── analyticsController.js
+│   ├── routes/                    # API Route declarations
+│   │   ├── authRoutes.js          # /api/auth/*
+│   │   ├── buyerRoutes.js         # /api/buyer/*
+│   │   └── sellerRoutes.js        # /api/seller/*
+│   ├── middleware/                # JWT Auth & Error Handling
+│   │   ├── authMiddleware.js      # Bearer token verification & Role access
+│   │   └── errorHandler.js        # Mongoose & API error formatter
+│   ├── data/                      # Database seed script
+│   │   └── seedData.js
+│   ├── server.js                  # Express application entry point (Port 5001)
+│   └── package.json
+│
+├── src/                           # React Frontend (Vite + Tailwind CSS)
+│   ├── components/                # Modular UI components
+│   ├── pages/                     # Dedicated views
+│   │   ├── AuthPage.jsx           # Dedicated Login & Sign-up page
+│   │   └── SellerDashboard.jsx    # Dedicated Seller Partner & Taproom portal
+│   ├── services/
+│   │   └── api.js                 # API client with JWT support
+│   └── data/
+│       └── mockData.js
+```
+
+---
+
+## 🚀 Running the MERN Stack
+
+### 1. Start the Backend API (Port 5001)
+```bash
+cd backend
+npm install
+node server.js
+```
+
+### 2. Seed Database (Optional)
+```bash
+cd backend
+npm run seed
+```
+
+### 3. Start the Frontend (Port 5173)
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## 🔌 API Endpoints Reference
+
+### 🔐 Authentication (`/api/auth`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | Public | Register new user as `buyer` or `seller` |
+| `POST` | `/api/auth/login` | Public | Authenticate user & get signed JWT token |
+| `GET` | `/api/auth/me` | Private | Get currently authenticated profile |
+| `PUT` | `/api/auth/profile` | Private | Update name, phone, or delivery address |
+
+---
+
+### 🛒 Buyer APIs (`/api/buyer`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| `GET` | `/api/buyer/restaurants` | Public | Search, filter (beer on tap, veg, happy hours, express), and sort |
+| `GET` | `/api/buyer/restaurants/:id` | Public | Get brewery profile + full menu grouped by category |
+| `POST` | `/api/buyer/orders` | Buyer | Place order with coupon discount & delivery notes |
+| `GET` | `/api/buyer/orders` | Buyer | View user's order history |
+| `GET` | `/api/buyer/orders/:id` | Buyer | Get live order status & delivery rider tracking |
+| `PUT` | `/api/buyer/orders/:id/cancel` | Buyer | Cancel order if still in `Placed` status |
+| `POST` | `/api/buyer/tables` | Buyer | Reserve a brewery table with party size & time slot |
+| `GET` | `/api/buyer/tables` | Buyer | View user's table reservations |
+| `POST` | `/api/buyer/reviews` | Buyer | Submit a rating & review for a restaurant |
+
+---
+
+### 🍻 Seller APIs (`/api/seller`)
+*(Protected with JWT + role `seller` or `admin`)*
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/seller/restaurant` | Get seller's registered brewery / restaurant profile |
+| `POST` | `/api/seller/restaurant` | Create or update restaurant info, cuisines, timings, address |
+| `PUT` | `/api/seller/restaurant/toggle-status` | Toggle restaurant OPEN / CLOSED for orders |
+| `GET` | `/api/seller/menu` | List all menu items for seller's kitchen |
+| `POST` | `/api/seller/menu` | Add a new craft beer, growler, or dish |
+| `PUT` | `/api/seller/menu/:id` | Update menu item details or price |
+| `DELETE` | `/api/seller/menu/:id` | Delete a menu item |
+| `PUT` | `/api/seller/menu/:id/toggle-stock` | Toggle item In Stock / Sold Out |
+| `GET` | `/api/seller/orders` | View incoming orders (filter by status) |
+| `PUT` | `/api/seller/orders/:id/status` | Update status: `Accepted` → `Preparing` → `Out for Delivery` → `Delivered` |
+| `GET` | `/api/seller/tables` | View taproom table reservations |
+| `PUT` | `/api/seller/tables/:id/status` | Confirm or complete table reservations |
+| `GET` | `/api/seller/analytics` | Total sales revenue, orders count, table metrics, and top items |

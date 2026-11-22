@@ -11,6 +11,7 @@ import CartDrawer from './components/CartDrawer';
 import OrderSuccessModal from './components/OrderSuccessModal';
 import AuthModal from './components/AuthModal';
 import AuthPage from './pages/AuthPage';
+import SellerDashboard from './pages/SellerDashboard';
 import Footer from './components/Footer';
 import { LOCATIONS, RESTAURANTS, PROMO_COUPONS } from './data/mockData';
 import { Beer, Search, RotateCcw, Sparkles } from 'lucide-react';
@@ -25,13 +26,13 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState(null);
 
-  // Sync hash routing for login / signup
+  // Sync hash routing for login / signup / seller
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash === 'login' || hash === 'signup') {
+      if (hash === 'login' || hash === 'signup' || hash === 'seller') {
         setCurrentPage(hash);
-      } else if (!hash && (currentPage === 'login' || currentPage === 'signup')) {
+      } else if (!hash && (currentPage === 'login' || currentPage === 'signup' || currentPage === 'seller')) {
         setCurrentPage('home');
       }
     };
@@ -247,6 +248,11 @@ export default function App() {
         }}
       />
     );
+  }
+
+  // Dedicated Seller Portal
+  if (currentPage === 'seller') {
+    return <SellerDashboard onBackToBuyer={() => navigateTo('home')} />;
   }
 
   return (
