@@ -44,9 +44,6 @@ export default function Navbar({
                 <span className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif]">
                   Hungry<span className="text-amber-400">Beer</span>
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600/90 text-white tracking-wider uppercase">
-                  Clone
-                </span>
               </div>
               <p className="text-[11px] font-medium text-amber-400/90 tracking-wide">
                 Bites • Brews • Delivery

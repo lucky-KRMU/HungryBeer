@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import TabNav from './components/TabNav';
 import HeroBanner from './components/HeroBanner';
@@ -10,16 +10,45 @@ import RestaurantModal from './components/RestaurantModal';
 import CartDrawer from './components/CartDrawer';
 import OrderSuccessModal from './components/OrderSuccessModal';
 import AuthModal from './components/AuthModal';
+import AuthPage from './pages/AuthPage';
 import Footer from './components/Footer';
 import { LOCATIONS, RESTAURANTS, PROMO_COUPONS } from './data/mockData';
 import { Beer, Search, RotateCcw, Sparkles } from 'lucide-react';
 
 export default function App() {
+  // Page Navigation ('home' | 'login' | 'signup')
+  const [currentPage, setCurrentPage] = useState('home');
+
   // Navigation & Location
   const [activeTab, setActiveTab] = useState('delivery'); // 'delivery' | 'dining' | 'nightlife'
   const [currentLocation, setCurrentLocation] = useState(LOCATIONS[0]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState(null);
+
+  // Sync hash routing for login / signup
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'login' || hash === 'signup') {
+        setCurrentPage(hash);
+      } else if (!hash && (currentPage === 'login' || currentPage === 'signup')) {
+        setCurrentPage('home');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    if (page === 'home') {
+      window.history.pushState(null, '', window.location.pathname);
+    } else {
+      window.location.hash = page;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Filters
   const [beerOnly, setBeerOnly] = useState(false);
@@ -206,6 +235,20 @@ export default function App() {
 
   const totalCartCount = cartItems.reduce((acc, i) => acc + i.quantity, 0);
 
+  // Dedicated Login / Sign-up Page
+  if (currentPage === 'login' || currentPage === 'signup') {
+    return (
+      <AuthPage
+        initialMode={currentPage}
+        onBackToHome={() => navigateTo('home')}
+        onLoginSuccess={(userData) => {
+          setUser(userData);
+          navigateTo('home');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0d0f12] text-gray-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
       
@@ -217,7 +260,7 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenAuth={(mode) => setAuthModal({ isOpen: true, mode })}
+        onOpenAuth={(mode) => navigateTo(mode)}
         user={user}
         onLogout={() => setUser(null)}
       />

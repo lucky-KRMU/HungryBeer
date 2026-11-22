@@ -1,6 +1,6 @@
-# 🍺 HungryBeer - Zomato Clone
+# 🍺 HungryBeer - Food, Dining & Chilled Brews Platform
 
-**HungryBeer** is a high-octane ReactJS clone of Zomato re-imagined with a bold **Yellow, Black & Red** theme celebrating craft beers, microbreweries, and gourmet pub food alongside classic delivery favorites.
+**HungryBeer** is a high-octane ReactJS food & beverage platform styled with a bold **Yellow, Black & Red** theme celebrating craft beers, microbreweries, and gourmet pub food alongside classic delivery favorites.
 
 ---
 
