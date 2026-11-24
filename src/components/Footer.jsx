@@ -28,10 +28,16 @@ export default function Footer({ theme }) {
               <Beer className="w-6 h-6 text-black stroke-[2.2]" />
             </div>
             <div>
-              <span className={`text-2xl font-black tracking-tight font-['Cabinet_Grotesk',sans-serif] ${
+              <span className={`text-2xl font-black tracking-tight font-['Cabinet_Grotesk',sans-serif] flex items-center ${
                 isLight ? 'text-slate-900' : 'text-white'
               }`}>
-                Hungry<span className={isValentine ? 'text-rose-400' : 'text-amber-500'}>Beer</span>
+                Hungry
+                {isValentine && (
+                  <span className="mx-1 text-xl animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss">
+                    💋
+                  </span>
+                )}
+                <span className={isValentine ? 'text-rose-400' : 'text-amber-500'}>Beer</span>
               </span>
               <p className={`text-xs ${isLight ? 'text-slate-500' : isValentine ? 'text-rose-300/70' : 'text-zinc-400'}`}>
                 {isValentine ? 'Love, Craft Brews & Romantic Food Destination' : 'The Ultimate Food & Chilled Brews Destination'}

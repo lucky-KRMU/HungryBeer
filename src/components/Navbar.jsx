@@ -46,8 +46,14 @@ export default function Navbar({
             
             <div>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif]">
-                  Hungry<span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
+                <span className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
+                  Hungry
+                  {theme === 'valentine' && (
+                    <span className="mx-1 text-xl animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
+                      💋
+                    </span>
+                  )}
+                  <span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
                 </span>
               </div>
               <p className={`text-[11px] font-medium tracking-wide flex items-center gap-1 ${

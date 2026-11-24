@@ -1,10 +1,27 @@
 @import "tailwindcss";
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Exclude elements with active keyframe transforms from transition conflicts */
+  .romantic-heart,
+  .animate-spin,
+  .animate-ping,
+  .animate-bounce,
+  .animate-pulse {
+    transition: none !important;
+  }
+
   body {
     background-color: #0d0f12;
     color: #f3f4f6;
-    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 

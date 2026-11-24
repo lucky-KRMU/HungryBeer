@@ -120,8 +120,14 @@ export default function AuthPage({
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20">
               <Beer className="w-6 h-6 text-black stroke-[2.2]" />
             </div>
-            <span className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
-              Hungry<span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
+            <span className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
+              Hungry
+              {theme === 'valentine' && (
+                <span className="mx-1 text-lg animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
+                  💋
+                </span>
+              )}
+              <span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
             </span>
           </div>
         </div>
