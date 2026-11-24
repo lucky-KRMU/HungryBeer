@@ -599,6 +599,13 @@ export const RESTAURANTS = [
 
 export const PROMO_COUPONS = [
   {
+    code: 'VALENTINE25',
+    discountPercent: 25,
+    maxDiscount: 250,
+    minOrder: 499,
+    description: '💖 Valentine Special: 25% OFF on romantic date night feasts!'
+  },
+  {
     code: 'HUNGRYBEER',
     discountPercent: 20,
     maxDiscount: 150,

@@ -9,9 +9,11 @@ import {
   X, 
   Sparkles,
   LogOut,
-  Store
+  Store,
+  Heart
 } from 'lucide-react';
 import { LOCATIONS } from '../data/mockData';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Navbar({ 
   currentLocation, 
@@ -22,7 +24,9 @@ export default function Navbar({
   onOpenCart, 
   onOpenAuth, 
   user, 
-  onLogout 
+  onLogout,
+  theme,
+  setTheme
 }) {
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
 
@@ -43,11 +47,20 @@ export default function Navbar({
             <div>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif]">
-                  Hungry<span className="text-amber-400">Beer</span>
+                  Hungry<span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-amber-400/90 tracking-wide">
-                Bites • Brews • Delivery
+              <p className={`text-[11px] font-medium tracking-wide flex items-center gap-1 ${
+                theme === 'valentine' ? 'text-rose-300' : 'text-amber-400/90'
+              }`}>
+                {theme === 'valentine' ? (
+                  <>
+                    <span>Love • Brews • Romance</span>
+                    <Heart className="w-2.5 h-2.5 fill-rose-400 text-rose-400" />
+                  </>
+                ) : (
+                  'Bites • Brews • Delivery'
+                )}
               </p>
             </div>
           </div>
@@ -121,6 +134,9 @@ export default function Navbar({
           {/* Right Action Buttons */}
           <div className="flex items-center gap-3">
             
+            {/* Visual Theme Selector (Dark, Light, Valentine) */}
+            <ThemeSwitcher theme={theme} setTheme={setTheme} />
+
             {/* Seller Portal Button — only visible to logged-in sellers */}
             {user?.role === 'seller' && (
               <button

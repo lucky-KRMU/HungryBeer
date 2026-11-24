@@ -4,6 +4,7 @@
   body {
     background-color: #0d0f12;
     color: #f3f4f6;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
@@ -41,4 +42,228 @@
 
 .custom-gradient-border {
   border-image: linear-gradient(to right, #f59e0b, #ef4444) 1;
+}
+
+/* ============================================================
+   LIGHT MODE THEME OVERRIDES
+   Clean, crisp ivory & warm amber
+   ============================================================ */
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="light"] body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+[data-theme="light"] .bg-\[\#0d0f12\],
+[data-theme="light"] .bg-\[\#0a0b0e\] {
+  background-color: #f8fafc !important;
+}
+
+[data-theme="light"] .bg-\[\#0d0f12\]\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .bg-zinc-900,
+[data-theme="light"] .bg-zinc-900\/95,
+[data-theme="light"] .bg-zinc-900\/90,
+[data-theme="light"] .bg-zinc-900\/80,
+[data-theme="light"] .bg-zinc-900\/60,
+[data-theme="light"] .bg-zinc-900\/50,
+[data-theme="light"] .bg-zinc-900\/40 {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 10px -1px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .bg-zinc-950,
+[data-theme="light"] .bg-zinc-950\/80 {
+  background-color: #f1f5f9 !important;
+}
+
+[data-theme="light"] .bg-zinc-800,
+[data-theme="light"] .bg-zinc-800\/90,
+[data-theme="light"] .bg-zinc-800\/80,
+[data-theme="light"] .bg-zinc-800\/70,
+[data-theme="light"] .bg-zinc-800\/60,
+[data-theme="light"] .bg-zinc-800\/40 {
+  background-color: #f1f5f9 !important;
+}
+
+[data-theme="light"] .border-zinc-800,
+[data-theme="light"] .border-zinc-800\/80,
+[data-theme="light"] .border-zinc-800\/60,
+[data-theme="light"] .border-zinc-700,
+[data-theme="light"] .border-zinc-700\/80,
+[data-theme="light"] .border-zinc-700\/70 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .text-gray-100,
+[data-theme="light"] .text-gray-200,
+[data-theme="light"] .text-gray-300 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-zinc-300,
+[data-theme="light"] .text-zinc-400 {
+  color: #64748b !important;
+}
+
+[data-theme="light"] input,
+[data-theme="light"] select {
+  color: #0f172a !important;
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* ============================================================
+   VALENTINE MODE THEME OVERRIDES (ROMANTIC)
+   Wine Velvet, Deep Rose, Soft Pink & Candlelight Amber
+   ============================================================ */
+[data-theme="valentine"] {
+  color-scheme: dark;
+}
+
+[data-theme="valentine"] body {
+  background-color: #12030b !important;
+  color: #ffe4e6 !important;
+}
+
+[data-theme="valentine"] ::-webkit-scrollbar-track {
+  background: #17040e;
+}
+
+[data-theme="valentine"] ::-webkit-scrollbar-thumb {
+  background: #4c0f2f;
+}
+
+[data-theme="valentine"] ::-webkit-scrollbar-thumb:hover {
+  background: #f43f5e;
+}
+
+[data-theme="valentine"] .bg-\[\#0d0f12\],
+[data-theme="valentine"] .bg-\[\#0a0b0e\] {
+  background-color: #12030b !important;
+}
+
+[data-theme="valentine"] .bg-\[\#0d0f12\]\/95 {
+  background-color: rgba(24, 5, 15, 0.96) !important;
+  box-shadow: 0 4px 25px -2px rgba(225, 29, 72, 0.15);
+}
+
+[data-theme="valentine"] .bg-zinc-900,
+[data-theme="valentine"] .bg-zinc-900\/95,
+[data-theme="valentine"] .bg-zinc-900\/90,
+[data-theme="valentine"] .bg-zinc-900\/80,
+[data-theme="valentine"] .bg-zinc-900\/60,
+[data-theme="valentine"] .bg-zinc-900\/50,
+[data-theme="valentine"] .bg-zinc-900\/40 {
+  background-color: #200715 !important;
+  box-shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.08);
+}
+
+[data-theme="valentine"] .bg-zinc-950,
+[data-theme="valentine"] .bg-zinc-950\/80 {
+  background-color: #17040e !important;
+}
+
+[data-theme="valentine"] .bg-zinc-800,
+[data-theme="valentine"] .bg-zinc-800\/90,
+[data-theme="valentine"] .bg-zinc-800\/80,
+[data-theme="valentine"] .bg-zinc-800\/70,
+[data-theme="valentine"] .bg-zinc-800\/60,
+[data-theme="valentine"] .bg-zinc-800\/40 {
+  background-color: #330b22 !important;
+}
+
+[data-theme="valentine"] .border-zinc-800,
+[data-theme="valentine"] .border-zinc-800\/80,
+[data-theme="valentine"] .border-zinc-800\/60,
+[data-theme="valentine"] .border-zinc-700,
+[data-theme="valentine"] .border-zinc-700\/80,
+[data-theme="valentine"] .border-zinc-700\/70 {
+  border-color: #551235 !important;
+}
+
+[data-theme="valentine"] .text-white {
+  color: #fff1f2 !important;
+}
+
+[data-theme="valentine"] .text-gray-100,
+[data-theme="valentine"] .text-gray-200,
+[data-theme="valentine"] .text-gray-300 {
+  color: #fecdd3 !important;
+}
+
+[data-theme="valentine"] .text-zinc-300,
+[data-theme="valentine"] .text-zinc-400 {
+  color: #fda4af !important;
+}
+
+[data-theme="valentine"] input,
+[data-theme="valentine"] select {
+  background-color: #18040f !important;
+  border-color: #551235 !important;
+  color: #fff1f2 !important;
+}
+
+[data-theme="valentine"] input::placeholder {
+  color: #9f1239 !important;
+}
+
+/* Romantic Valentine Glows */
+.valentine-glow {
+  box-shadow: 0 0 30px -5px rgba(225, 29, 72, 0.45);
+}
+
+.valentine-glow-sm {
+  box-shadow: 0 0 15px -3px rgba(244, 63, 94, 0.35);
+}
+
+/* Floating romantic heart particles */
+@keyframes floatHeart {
+  0% {
+    transform: translateY(105vh) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1.1) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+.romantic-heart {
+  position: absolute;
+  pointer-events: none;
+  animation: floatHeart linear infinite;
+  user-select: none;
 }

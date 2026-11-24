@@ -20,7 +20,9 @@ import {
   LogOut
 } from 'lucide-react';
 
-export default function SellerDashboard({ user, onLogout }) {
+import ThemeSwitcher from '../components/ThemeSwitcher';
+
+export default function SellerDashboard({ user, onLogout, theme, setTheme }) {
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'menu' | 'tables' | 'analytics' | 'profile'
   const [isOpen, setIsOpen] = useState(true);
 
@@ -149,6 +151,8 @@ export default function SellerDashboard({ user, onLogout }) {
 
         {/* Right Status Switch & Logout */}
         <div className="flex items-center gap-3">
+          <ThemeSwitcher theme={theme} setTheme={setTheme} />
+
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${

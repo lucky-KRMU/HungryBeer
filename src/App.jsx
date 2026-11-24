@@ -21,6 +21,15 @@ export default function App() {
   // Page Navigation ('home' | 'login' | 'signup')
   const [currentPage, setCurrentPage] = useState('home');
 
+  // Visual Theme ('dark' | 'light' | 'valentine')
+  const [theme, setTheme] = useState(() => localStorage.getItem('hungrybeer_theme') || 'dark');
+
+  // Sync theme attribute on document root
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('hungrybeer_theme', theme);
+  }, [theme]);
+
   // User state restored from MongoDB backend
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -257,6 +266,8 @@ export default function App() {
       <AuthPage
         initialMode={currentPage}
         onBackToHome={() => navigateTo('home')}
+        theme={theme}
+        setTheme={setTheme}
         onLoginSuccess={(userData) => {
           setUser(userData);
           // Sellers go directly to their portal; buyers stay on home
@@ -286,6 +297,8 @@ export default function App() {
     return (
       <SellerDashboard 
         user={user} 
+        theme={theme}
+        setTheme={setTheme}
         onLogout={() => {
           setUser(null);
           setAuthToken(null);
@@ -308,17 +321,32 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={(mode) => navigateTo(mode)}
         user={user}
+        theme={theme}
+        setTheme={setTheme}
         onLogout={() => {
           setUser(null);
           setAuthToken(null);
         }}
       />
 
+      {/* Floating Romantic Atmosphere for Valentine Mode */}
+      {theme === 'valentine' && (
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="romantic-heart text-2xl text-rose-400" style={{ left: '8%', animationDuration: '14s', animationDelay: '0s' }}>💖</div>
+          <div className="romantic-heart text-xl text-pink-300" style={{ left: '22%', animationDuration: '18s', animationDelay: '3s' }}>🌹</div>
+          <div className="romantic-heart text-2xl text-rose-500" style={{ left: '38%', animationDuration: '16s', animationDelay: '6s' }}>🍷</div>
+          <div className="romantic-heart text-lg text-pink-400" style={{ left: '55%', animationDuration: '20s', animationDelay: '2s' }}>✨</div>
+          <div className="romantic-heart text-2xl text-rose-400" style={{ left: '72%', animationDuration: '15s', animationDelay: '5s' }}>💕</div>
+          <div className="romantic-heart text-xl text-rose-300" style={{ left: '86%', animationDuration: '17s', animationDelay: '8s' }}>🕯️</div>
+          <div className="romantic-heart text-2xl text-pink-400" style={{ left: '94%', animationDuration: '19s', animationDelay: '1s' }}>💖</div>
+        </div>
+      )}
+
       {/* 2. Zomato Tab Navigation (Delivery, Dining Out, Nightlife) */}
       <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* 3. Hero Promo Banner */}
-      <HeroBanner onSelectOffer={handleSelectOffer} activeTab={activeTab} />
+      <HeroBanner onSelectOffer={handleSelectOffer} activeTab={activeTab} theme={theme} />
 
       {/* 4. Collections Section (Featured in Dining & Nightlife or top overview) */}
       {(activeTab === 'dining' || activeTab === 'nightlife') && (

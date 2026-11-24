@@ -15,13 +15,17 @@ import {
   Gift, 
   Clock,
   Store,
-  Sparkles
+  Sparkles,
+  Heart
 } from 'lucide-react';
+import ThemeSwitcher from '../components/ThemeSwitcher';
 
 export default function AuthPage({ 
   initialMode = 'login', 
   onBackToHome, 
-  onLoginSuccess 
+  onLoginSuccess,
+  theme,
+  setTheme
 }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
   const [role, setRole] = useState('buyer'); // 'buyer' | 'seller'
@@ -109,13 +113,17 @@ export default function AuthPage({
           <span>Back to HungryBeer</span>
         </button>
 
-        <div className="flex items-center gap-2.5 cursor-pointer" onClick={onBackToHome}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20">
-            <Beer className="w-6 h-6 text-black stroke-[2.2]" />
+        <div className="flex items-center gap-3">
+          <ThemeSwitcher theme={theme} setTheme={setTheme} />
+
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onBackToHome}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20">
+              <Beer className="w-6 h-6 text-black stroke-[2.2]" />
+            </div>
+            <span className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
+              Hungry<span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
+            </span>
           </div>
-          <span className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
-            Hungry<span className="text-amber-400">Beer</span>
-          </span>
         </div>
       </nav>
 
