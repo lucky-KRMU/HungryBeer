@@ -3,19 +3,22 @@ import { Beer, Flame, Sparkles, Clock, ShieldCheck, Heart, Wine } from 'lucide-r
 
 export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
   const isValentine = theme === 'valentine';
+  const isLight = theme === 'light';
 
   return (
     <div className={`relative overflow-hidden border-b py-8 px-4 sm:px-6 lg:px-8 transition-colors ${
       isValentine
         ? 'bg-gradient-to-r from-[#200716] via-[#2a091d] to-[#18040f] border-rose-900/50'
+        : isLight
+        ? 'bg-gradient-to-r from-amber-50/90 via-orange-50/60 to-red-50/40 border-amber-200/70 shadow-xs'
         : 'bg-gradient-to-r from-[#111317] via-[#181a20] to-[#120d0f] border-zinc-800/80'
     }`}>
       {/* Decorative ambient glows */}
       <div className={`absolute -top-24 -left-24 w-96 h-96 rounded-full blur-3xl pointer-events-none ${
-        isValentine ? 'bg-rose-600/20' : 'bg-amber-500/10'
+        isValentine ? 'bg-rose-600/20' : isLight ? 'bg-amber-400/25' : 'bg-amber-500/10'
       }`}></div>
       <div className={`absolute top-1/2 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none ${
-        isValentine ? 'bg-pink-500/20' : 'bg-red-600/10'
+        isValentine ? 'bg-pink-500/20' : isLight ? 'bg-red-400/15' : 'bg-red-600/10'
       }`}></div>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
@@ -25,6 +28,8 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 border ${
             isValentine
               ? 'bg-rose-500/15 border-rose-400/40 text-rose-200'
+              : isLight
+              ? 'bg-amber-100 border-amber-300 text-amber-900 font-bold'
               : 'bg-amber-400/10 border-amber-400/30 text-amber-300'
           }`}>
             {isValentine ? (
@@ -34,13 +39,15 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
               </>
             ) : (
               <>
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <Sparkles className={`w-3.5 h-3.5 ${isLight ? 'text-amber-600' : 'text-amber-400'}`} />
                 <span>Weekend Brewfest & Feast is Live!</span>
               </>
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight font-['Cabinet_Grotesk',sans-serif]">
+          <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight font-['Cabinet_Grotesk',sans-serif] ${
+            isLight ? 'text-slate-900' : 'text-white'
+          }`}>
             {isValentine ? (
               <>
                 Love & Craft Brews: <br />
@@ -51,21 +58,25 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
             ) : (
               <>
                 Fresh Craft Beers & <br />
-                <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-red-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
                   Fiery Gourmet Bites
                 </span>
               </>
             )}
           </h1>
 
-          <p className="mt-2 text-zinc-300 text-sm sm:text-base leading-relaxed">
+          <p className={`mt-2 text-sm sm:text-base leading-relaxed ${
+            isLight ? 'text-slate-700 font-medium' : 'text-zinc-300'
+          }`}>
             {isValentine
               ? 'Handcrafted strawberry witbiers, candlelit brewery booths, woodfired pizzas & artisanal chocolates for two. Celebrate romance!'
               : 'From smoky pulled pork to woodfired sourdough pizzas and microbrewed IPAs. Delivered ice cold & piping hot under 30 minutes!'}
           </p>
 
           {/* Quick Perks */}
-          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-medium text-zinc-400">
+          <div className={`mt-4 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-semibold ${
+            isLight ? 'text-slate-600' : 'text-zinc-400'
+          }`}>
             {isValentine ? (
               <>
                 <span className="flex items-center gap-1.5 text-rose-300">
@@ -80,14 +91,14 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
               </>
             ) : (
               <>
-                <span className="flex items-center gap-1.5 text-amber-300">
-                  <Beer className="w-4 h-4 text-amber-400" /> 100% Chilled Delivery
+                <span className={`flex items-center gap-1.5 ${isLight ? 'text-amber-700' : 'text-amber-300'}`}>
+                  <Beer className={`w-4 h-4 ${isLight ? 'text-amber-600' : 'text-amber-400'}`} /> 100% Chilled Delivery
                 </span>
-                <span className="flex items-center gap-1.5 text-gray-300">
-                  <Clock className="w-4 h-4 text-red-400" /> Avg. 25 Mins
+                <span className={`flex items-center gap-1.5 ${isLight ? 'text-red-700' : 'text-gray-300'}`}>
+                  <Clock className={`w-4 h-4 ${isLight ? 'text-red-600' : 'text-red-400'}`} /> Avg. 25 Mins
                 </span>
-                <span className="flex items-center gap-1.5 text-gray-300">
-                  <ShieldCheck className="w-4 h-4 text-green-400" /> Hygiene & Brew Certified
+                <span className={`flex items-center gap-1.5 ${isLight ? 'text-emerald-700' : 'text-gray-300'}`}>
+                  <ShieldCheck className={`w-4 h-4 ${isLight ? 'text-emerald-600' : 'text-green-400'}`} /> Hygiene & Brew Certified
                 </span>
               </>
             )}
@@ -99,6 +110,8 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
           <div className={`p-5 rounded-2xl border shadow-xl relative overflow-hidden group ${
             isValentine
               ? 'bg-gradient-to-br from-[#2c091f] to-[#1d0515] border-rose-500/40 shadow-rose-950/40'
+              : isLight
+              ? 'bg-white border-amber-300 shadow-md shadow-amber-500/10'
               : 'bg-gradient-to-br from-zinc-900 to-zinc-950 border-amber-500/30 shadow-amber-500/10'
           }`}>
             <div className={`absolute top-0 right-0 text-white text-[11px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider flex items-center gap-1 shadow ${
@@ -109,14 +122,14 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
             </div>
 
             <div className={`text-xs font-bold uppercase tracking-widest mb-1 ${
-              isValentine ? 'text-rose-300' : 'text-amber-400'
+              isValentine ? 'text-rose-300' : isLight ? 'text-amber-600' : 'text-amber-400'
             }`}>
               {isValentine ? 'Date Night Promo' : 'Special Brew Promo'}
             </div>
-            <div className="text-2xl font-black text-white">
+            <div className={`text-2xl font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>
               FLAT 25% OFF
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5 max-w-[220px]">
+            <p className={`text-xs mt-0.5 max-w-[220px] ${isLight ? 'text-slate-600' : 'text-zinc-400'}`}>
               {isValentine
                 ? 'On romantic couple combos & craft pours today!'
                 : 'On all brewery combos and taproom favorites today!'}
@@ -125,10 +138,12 @@ export default function HeroBanner({ onSelectOffer, activeTab, theme }) {
             <div className={`mt-4 flex items-center justify-between gap-3 p-2 rounded-xl border border-dashed ${
               isValentine
                 ? 'bg-rose-950/60 border-rose-500/50'
+                : isLight
+                ? 'bg-amber-50/90 border-amber-300'
                 : 'bg-zinc-800/80 border-amber-500/40'
             }`}>
               <span className={`font-mono text-sm font-extrabold tracking-wider ${
-                isValentine ? 'text-rose-300' : 'text-amber-300'
+                isValentine ? 'text-rose-300' : isLight ? 'text-amber-700' : 'text-amber-300'
               }`}>
                 {isValentine ? 'VALENTINE25' : 'HUNGRYBEER'}
               </span>

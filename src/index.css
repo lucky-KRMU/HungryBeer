@@ -139,6 +139,28 @@
   color: #94a3b8 !important;
 }
 
+[data-theme="light"] footer {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] footer .bg-black {
+  background-color: #f1f5f9 !important;
+}
+
+[data-theme="light"] footer h4 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] footer a {
+  color: #475569 !important;
+}
+
+[data-theme="light"] footer a:hover {
+  color: #d97706 !important;
+}
+
 /* ============================================================
    VALENTINE MODE THEME OVERRIDES (ROMANTIC)
    Wine Velvet, Deep Rose, Soft Pink & Candlelight Amber

@@ -488,7 +488,7 @@ export default function App() {
       />
 
       {/* 9. Mega Footer */}
-      <Footer />
+      <Footer theme={theme} />
 
     </div>
   );

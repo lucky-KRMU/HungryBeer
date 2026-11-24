@@ -455,7 +455,13 @@ export default function AuthPage({
       </div>
 
       {/* Page Footer */}
-      <footer className="p-4 sm:p-6 border-t border-zinc-900 text-center text-xs text-zinc-400">
+      <footer className={`p-4 sm:p-6 border-t text-center text-xs ${
+        theme === 'light'
+          ? 'border-slate-200 text-slate-500 bg-slate-100/60'
+          : theme === 'valentine'
+          ? 'border-rose-950 text-rose-300/60'
+          : 'border-zinc-900 text-zinc-400'
+      }`}>
         © 2026 HungryBeer™ Ltd. Drink responsibly. Must be of legal drinking age.
       </footer>
 
