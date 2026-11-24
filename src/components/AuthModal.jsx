@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { api, setAuthToken } from '../services/api';
-import { X, Beer, Mail, Phone, Lock, Sparkles, Check, AlertCircle } from 'lucide-react';
+import { X, Beer, Mail, Phone, Lock, Check, AlertCircle } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLoginSuccess }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
@@ -59,25 +59,6 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
       }
     } catch (err) {
       setErrorMessage(err.message || 'Error communicating with backend');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    try {
-      const res = await api.auth.login({
-        email: 'buyer@hungrybeer.com',
-        password: 'password123'
-      });
-      if (res.success && res.user) {
-        setAuthToken(res.token);
-        onLoginSuccess(res.user);
-        onClose();
-      }
-    } catch (err) {
-      console.warn('Demo login error', err);
     } finally {
       setIsLoading(false);
     }
@@ -193,25 +174,6 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
             {mode === 'login' ? 'Log In to Feast' : 'Create HungryBeer Account'}
           </button>
         </form>
-
-        <div className="relative my-5">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-zinc-800"></div>
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-zinc-900 px-2 text-zinc-400 font-semibold">Or continue with</span>
-          </div>
-        </div>
-
-        {/* Demo Fast Login */}
-        <button
-          onClick={handleDemoLogin}
-          type="button"
-          className="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-amber-300 font-bold text-xs flex items-center justify-center gap-2 border border-zinc-700 transition-colors"
-        >
-          <Sparkles className="w-4 h-4 text-amber-400" />
-          <span>One-Click Demo User (Quick Test)</span>
-        </button>
 
         <p className="text-[11px] text-zinc-400 text-center mt-4">
           By signing in, you agree to HungryBeer's Terms of Service and Privacy Policy. You must be of legal drinking age in your state.

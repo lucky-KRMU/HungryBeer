@@ -133,29 +133,31 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Cart Button */}
-            <button
-              onClick={onOpenCart}
-              className="relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-gray-200 border border-zinc-700 hover:border-amber-400/50 transition-all duration-200 group"
-            >
-              <ShoppingBag className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-semibold hidden sm:inline">Cart</span>
-              {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white font-bold text-xs flex items-center justify-center shadow-lg animate-bounce">
-                  {cartCount}
-                </span>
-              )}
-            </button>
+            {/* Cart Button — hidden for sellers, only buyers can order food */}
+            {user?.role !== 'seller' && (
+              <button
+                onClick={onOpenCart}
+                className="relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-gray-200 border border-zinc-700 hover:border-amber-400/50 transition-all duration-200 group"
+              >
+                <ShoppingBag className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-semibold hidden sm:inline">Cart</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white font-bold text-xs flex items-center justify-center shadow-lg animate-bounce">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            )}
 
             {/* Auth Button */}
             {user ? (
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900 border border-amber-500/30 text-sm">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-red-500 flex items-center justify-center text-black font-bold text-xs">
-                    {user.name.charAt(0)}
+                    {(user?.name || user?.email || 'U').charAt(0).toUpperCase()}
                   </div>
                   <span className="font-medium text-gray-200 hidden sm:inline truncate max-w-[90px]">
-                    {user.name}
+                    {user?.name || user?.email || 'User'}
                   </span>
                   <button 
                     onClick={onLogout}

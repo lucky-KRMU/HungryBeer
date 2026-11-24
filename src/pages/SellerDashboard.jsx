@@ -16,10 +16,11 @@ import {
   Users,
   Star,
   Check,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 
-export default function SellerDashboard({ onBackToBuyer }) {
+export default function SellerDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'menu' | 'tables' | 'analytics' | 'profile'
   const [isOpen, setIsOpen] = useState(true);
 
@@ -129,32 +130,24 @@ export default function SellerDashboard({ onBackToBuyer }) {
       
       {/* Top Seller Bar */}
       <header className="sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onBackToBuyer}
-            className="flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-amber-400 bg-zinc-800/80 hover:bg-zinc-800 px-3 py-1.5 rounded-xl border border-zinc-700 transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Switch to Buyer Mode</span>
-          </button>
-
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-amber-400 text-black flex items-center justify-center font-black">
-              <Store className="w-4 h-4" />
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20 text-black">
+            <Store className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-black text-base text-white font-['Cabinet_Grotesk',sans-serif]">The Hoppy Keg Taproom</span>
+              <span className="text-[10px] bg-amber-400/20 text-amber-400 font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30">
+                Seller Portal
+              </span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-sm sm:text-base text-white">The Hoppy Keg Taproom</span>
-                <span className="text-[10px] bg-amber-400/20 text-amber-400 font-extrabold px-1.5 py-0.2 rounded border border-amber-500/30">
-                  Seller Portal
-                </span>
-              </div>
-              <span className="text-[11px] text-zinc-400">Connaught Place, Central Delhi</span>
-            </div>
+            <span className="text-[11px] text-zinc-400">
+              Partner: {user?.name || user?.email || 'Authorized Brewery'} • Connaught Place, Central Delhi
+            </span>
           </div>
         </div>
 
-        {/* Right Status Switch & Partner Profile */}
+        {/* Right Status Switch & Logout */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -167,6 +160,17 @@ export default function SellerDashboard({ onBackToBuyer }) {
             <Power className="w-3.5 h-3.5" />
             <span>{isOpen ? 'Taproom OPEN' : 'Taproom CLOSED'}</span>
           </button>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 text-xs font-bold transition-all"
+              title="Log Out of Seller Portal"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Log Out</span>
+            </button>
+          )}
         </div>
       </header>
 

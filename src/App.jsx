@@ -23,6 +23,7 @@ export default function App() {
 
   // User state restored from MongoDB backend
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   // Restore authenticated session from backend on mount
   useEffect(() => {
@@ -33,6 +34,9 @@ export default function App() {
           const res = await api.auth.getMe();
           if (res.success && res.user) {
             setUser(res.user);
+            if (res.user.role === 'seller') {
+              setCurrentPage('seller');
+            }
           } else {
             setAuthToken(null);
           }
@@ -40,6 +44,7 @@ export default function App() {
           console.warn('Could not restore user from backend:', err.message);
         }
       }
+      setAuthLoading(false);
     };
     fetchUser();
   }, []);
@@ -95,26 +100,9 @@ export default function App() {
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
   const [orderSuccessData, setOrderSuccessData] = useState(null);
 
-  // Cart State
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 'm1',
-      name: 'Belgian Golden Witbier (500ml Growler)',
-      price: 360,
-      quantity: 1,
-      isVeg: true,
-      restaurantId: 'hb-1'
-    },
-    {
-      id: 'm4',
-      name: 'Truffle Cheddar Smashed Burger',
-      price: 420,
-      quantity: 1,
-      isVeg: false,
-      restaurantId: 'hb-1'
-    }
-  ]);
-  const [cartRestaurant, setCartRestaurant] = useState(RESTAURANTS[0]);
+  // Cart State — starts empty; items are added by the buyer from restaurant menus
+  const [cartItems, setCartItems] = useState([]);
+  const [cartRestaurant, setCartRestaurant] = useState(null);
 
   // Toggle favorite
   const handleToggleFavorite = (restId) => {
@@ -282,14 +270,29 @@ export default function App() {
     );
   }
 
-  // Dedicated Seller Portal — only accessible to authenticated sellers
-  if (currentPage === 'seller') {
+  // Dedicated Seller Portal — only accessible to authenticated sellers, and sellers are strictly restricted to it
+  if (currentPage === 'seller' || user?.role === 'seller') {
+    if (authLoading) {
+      return (
+        <div className="min-h-screen bg-[#0a0b0e] flex items-center justify-center text-amber-400">
+          <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      );
+    }
     if (!user || user.role !== 'seller') {
-      // Redirect buyers and unauthenticated users away immediately
       setTimeout(() => navigateTo(user ? 'home' : 'login'), 0);
       return null;
     }
-    return <SellerDashboard onBackToBuyer={() => navigateTo('home')} />;
+    return (
+      <SellerDashboard 
+        user={user} 
+        onLogout={() => {
+          setUser(null);
+          setAuthToken(null);
+          navigateTo('home');
+        }} 
+      />
+    );
   }
 
   return (

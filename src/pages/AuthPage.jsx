@@ -10,12 +10,12 @@ import {
   Eye, 
   EyeOff, 
   CheckCircle, 
-  Sparkles, 
   ShieldCheck, 
   Flame, 
   Gift, 
   Clock,
-  Store
+  Store,
+  Sparkles
 } from 'lucide-react';
 
 export default function AuthPage({ 
@@ -91,27 +91,6 @@ export default function AuthPage({
       }
     } catch (err) {
       setErrorMessage(err.message || 'Error communicating with backend server.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    setErrorMessage('');
-    try {
-      const res = await api.auth.login({
-        email: 'buyer@hungrybeer.com',
-        password: 'password123'
-      });
-      if (res.success && res.user) {
-        setAuthToken(res.token);
-        onLoginSuccess(res.user);
-      } else {
-        setErrorMessage(res.message || 'Demo login failed');
-      }
-    } catch (err) {
-      setErrorMessage('Could not connect to backend server at http://localhost:5001');
     } finally {
       setIsLoading(false);
     }
@@ -436,26 +415,6 @@ export default function AuthPage({
                 )}
               </button>
             </form>
-
-            {/* Divider */}
-            <div className="relative my-5">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-800"></div>
-              </div>
-              <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-                <span className="bg-zinc-900 px-3 text-zinc-400 font-bold">Or Instant Access</span>
-              </div>
-            </div>
-
-            {/* One-click Demo Button */}
-            <button
-              onClick={handleDemoLogin}
-              type="button"
-              className="w-full py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-amber-300 font-bold text-xs flex items-center justify-center gap-2 border border-zinc-700 hover:border-amber-500/40 transition-colors"
-            >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>One-Click Demo Login (Rohan Sharma)</span>
-            </button>
 
             {/* Switch mode footer */}
             <div className="text-center mt-5 text-xs text-zinc-400">
