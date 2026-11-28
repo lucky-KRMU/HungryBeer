@@ -163,6 +163,11 @@ export default function App() {
   };
 
   const handleCheckout = (details) => {
+    if (!user) {
+      setIsCartOpen(false);
+      setAuthModal({ isOpen: true, mode: 'login' });
+      return;
+    }
     setIsCartOpen(false);
     setOrderSuccessData(details);
     setCartItems([]);
@@ -468,6 +473,11 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
         onCheckout={handleCheckout}
+        user={user}
+        onRequireAuth={(mode = 'login') => {
+          setIsCartOpen(false);
+          setAuthModal({ isOpen: true, mode });
+        }}
       />
 
       {/* Order Confirmed & Tracking Modal */}
@@ -484,7 +494,14 @@ export default function App() {
         isOpen={authModal.isOpen}
         initialMode={authModal.mode}
         onClose={() => setAuthModal({ ...authModal, isOpen: false })}
-        onLoginSuccess={(userData) => setUser(userData)}
+        onLoginSuccess={(userData) => {
+          setUser(userData);
+          if (userData.role === 'seller') {
+            navigateTo('seller');
+          } else if (cartItems.length > 0) {
+            setIsCartOpen(true);
+          }
+        }}
       />
 
       {/* 9. Mega Footer */}

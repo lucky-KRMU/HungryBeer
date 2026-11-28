@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { api, setAuthToken } from '../services/api';
 import { X, Beer, Mail, Phone, Lock, Check, AlertCircle, Store } from 'lucide-react';
 
@@ -11,6 +11,13 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode);
+      setErrorMessage('');
+    }
+  }, [initialMode, isOpen]);
 
   if (!isOpen) return null;
 
@@ -152,6 +159,14 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
               <Store className="w-3.5 h-3.5" />
               <span>Seller (Partner)</span>
             </button>
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {errorMessage && (
+          <div className="mb-4 p-3 rounded-xl bg-red-950/60 border border-red-700/60 text-red-300 text-xs font-semibold flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+            <span>{errorMessage}</span>
           </div>
         )}
 

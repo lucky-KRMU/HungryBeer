@@ -12,7 +12,8 @@ import {
   Check, 
   MapPin, 
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Lock
 } from 'lucide-react';
 import { PROMO_COUPONS } from '../data/mockData';
 
@@ -23,7 +24,9 @@ export default function CartDrawer({
   restaurant,
   onUpdateQuantity,
   onClearCart,
-  onCheckout
+  onCheckout,
+  user,
+  onRequireAuth
 }) {
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState(null);
@@ -332,21 +335,46 @@ export default function CartDrawer({
         {/* Drawer Footer / Place Order Bar */}
         {cartItems.length > 0 && (
           <div className="p-4 bg-zinc-900 border-t border-zinc-800">
-            <button
-              onClick={() => onCheckout({ grandTotal, discount, deliveryNote, appliedCoupon })}
-              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-red-600 hover:from-amber-300 hover:to-red-500 text-black font-black text-sm uppercase tracking-wider flex items-center justify-between shadow-xl shadow-amber-500/20 active:scale-[0.99] transition-all"
-            >
-              <div className="flex items-center gap-2">
-                <span>Place Order</span>
-                <span className="text-xs bg-black/20 px-2 py-0.5 rounded font-extrabold text-black">
-                  ₹{grandTotal}
-                </span>
+            {user ? (
+              <>
+                <button
+                  onClick={() => onCheckout({ grandTotal, discount, deliveryNote, appliedCoupon })}
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-red-600 hover:from-amber-300 hover:to-red-500 text-black font-black text-sm uppercase tracking-wider flex items-center justify-between shadow-xl shadow-amber-500/20 active:scale-[0.99] transition-all"
+                >
+                  <div className="flex items-center gap-2">
+                    <span>Place Order</span>
+                    <span className="text-xs bg-black/20 px-2 py-0.5 rounded font-extrabold text-black">
+                      ₹{grandTotal}
+                    </span>
+                  </div>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <p className="text-[10px] text-zinc-400 text-center mt-2">
+                  ⚡ Guaranteed fresh draft temperature & safe contactless delivery
+                </p>
+              </>
+            ) : (
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs">
+                  <Lock className="w-3.5 h-3.5 shrink-0 text-amber-400" />
+                  <span>Please log in or sign up to place your order.</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => onRequireAuth('login')}
+                    className="py-3 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-black text-xs uppercase tracking-wider border border-zinc-700 transition-all active:scale-[0.99]"
+                  >
+                    Log In
+                  </button>
+                  <button
+                    onClick={() => onRequireAuth('signup')}
+                    className="py-3 px-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-red-600 hover:from-amber-300 hover:to-red-500 text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all active:scale-[0.99]"
+                  >
+                    Sign Up
+                  </button>
+                </div>
               </div>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <p className="text-[10px] text-zinc-400 text-center mt-2">
-              ⚡ Guaranteed fresh draft temperature & safe contactless delivery
-            </p>
+            )}
           </div>
         )}
 
