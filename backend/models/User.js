@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
       enum: ['buyer', 'seller', 'admin'],
       default: 'buyer'
     },
+    restaurantName: {
+      type: String,
+      default: ''
+    },
     avatar: {
       type: String,
       default: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80'

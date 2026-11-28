@@ -1,16 +1,24 @@
 import User from '../models/User.js';
+import Restaurant from '../models/Restaurant.js';
 
 // @desc    Register a new user (buyer or seller)
 // @route   POST /api/auth/register
 // @access  Public
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password, phone, role } = req.body;
+    const { name, email, password, phone, role, restaurantName } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
         message: 'Please provide name, email, and password.'
+      });
+    }
+
+    if (role === 'seller' && (!restaurantName || !restaurantName.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide the name of your restaurant or brewery.'
       });
     }
 
@@ -23,14 +31,33 @@ export const registerUser = async (req, res, next) => {
     }
 
     const assignedRole = role === 'seller' ? 'seller' : 'buyer';
+    const trimmedRestName = assignedRole === 'seller' && restaurantName ? restaurantName.trim() : '';
 
     const user = await User.create({
       name,
       email: email.toLowerCase(),
       password,
       phone: phone || '',
-      role: assignedRole
+      role: assignedRole,
+      restaurantName: trimmedRestName
     });
+
+    // If seller, automatically initialize their Restaurant profile in MongoDB
+    if (assignedRole === 'seller' && trimmedRestName) {
+      try {
+        await Restaurant.create({
+          sellerId: user._id,
+          name: trimmedRestName,
+          tagline: 'Craft Brews & Gourmet Bites',
+          cuisines: ['Craft Beer', 'American', 'Continental', 'Bar Food'],
+          priceForTwo: 1200,
+          hasBeer: true,
+          isDining: true
+        });
+      } catch (restErr) {
+        console.warn('Auto-create restaurant note:', restErr.message);
+      }
+    }
 
     const token = user.getSignedJwtToken();
 
@@ -44,6 +71,7 @@ export const registerUser = async (req, res, next) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        restaurantName: user.restaurantName || '',
         avatar: user.avatar
       }
     });
@@ -94,6 +122,7 @@ export const loginUser = async (req, res, next) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        restaurantName: user.restaurantName || '',
         avatar: user.avatar
       }
     });

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { api, setAuthToken } from '../services/api';
-import { X, Beer, Mail, Phone, Lock, Check, AlertCircle } from 'lucide-react';
+import { X, Beer, Mail, Phone, Lock, Check, AlertCircle, Store } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLoginSuccess }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
+  const [role, setRole] = useState('buyer'); // 'buyer' | 'seller'
+  const [restaurantName, setRestaurantName] = useState('');
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
@@ -21,6 +23,11 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
       return;
     }
 
+    if (mode === 'signup' && role === 'seller' && !restaurantName.trim()) {
+      setErrorMessage('Please provide the name of your restaurant or brewery');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const trimmed = emailOrPhone.trim().toLowerCase();
@@ -33,7 +40,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
           name: fullName.trim() || 'Hungry Friend',
           email: validEmail,
           password: password,
-          role: 'buyer'
+          role: role,
+          restaurantName: role === 'seller' ? restaurantName.trim() : ''
         });
 
         if (res.success && res.user) {
@@ -92,7 +100,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
         </div>
 
         {/* Switcher Tab */}
-        <div className="flex rounded-xl bg-zinc-950 p-1 mb-5 border border-zinc-800 text-xs font-bold">
+        <div className="flex rounded-xl bg-zinc-950 p-1 mb-4 border border-zinc-800 text-xs font-bold">
           <button
             type="button"
             onClick={() => setMode('login')}
@@ -117,6 +125,36 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
           </button>
         </div>
 
+        {/* Role Selector for Sign Up in Modal */}
+        {mode === 'signup' && (
+          <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-4 text-xs font-bold">
+            <button
+              type="button"
+              onClick={() => setRole('buyer')}
+              className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                role === 'buyer'
+                  ? 'bg-zinc-800 text-amber-400 border border-amber-500/30 shadow'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <Beer className="w-3.5 h-3.5" />
+              <span>Buyer</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('seller')}
+              className={`flex-1 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                role === 'seller'
+                  ? 'bg-zinc-800 text-amber-400 border border-amber-500/30 shadow'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <Store className="w-3.5 h-3.5" />
+              <span>Seller (Partner)</span>
+            </button>
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {mode === 'signup' && (
@@ -131,6 +169,24 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="e.g. Alex Hunter"
                 className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+              />
+            </div>
+          )}
+
+          {/* Restaurant Name field for Sellers */}
+          {mode === 'signup' && role === 'seller' && (
+            <div>
+              <label className="block text-xs font-semibold text-amber-400 mb-1 flex items-center gap-1">
+                <Store className="w-3.5 h-3.5" />
+                <span>Restaurant / Brewery Name *</span>
+              </label>
+              <input
+                type="text"
+                required
+                value={restaurantName}
+                onChange={(e) => setRestaurantName(e.target.value)}
+                placeholder="e.g. The Hoppy Keg Taproom"
+                className="w-full bg-zinc-950 border border-amber-500/50 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
               />
             </div>
           )}

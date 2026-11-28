@@ -29,6 +29,7 @@ export default function AuthPage({
 }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
   const [role, setRole] = useState('buyer'); // 'buyer' | 'seller'
+  const [restaurantName, setRestaurantName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -47,6 +48,11 @@ export default function AuthPage({
 
     if (mode === 'signup' && !agreedToTerms) {
       setErrorMessage('Please confirm you are of legal drinking age (21+)');
+      return;
+    }
+
+    if (mode === 'signup' && role === 'seller' && !restaurantName.trim()) {
+      setErrorMessage('Please enter the name of your restaurant or brewery.');
       return;
     }
 
@@ -70,7 +76,8 @@ export default function AuthPage({
           email: validEmail,
           password: password,
           phone: phoneNumber.trim() || (!emailOrPhone.includes('@') ? emailOrPhone.trim() : ''),
-          role: role
+          role: role,
+          restaurantName: role === 'seller' ? restaurantName.trim() : ''
         });
 
         if (res.success && res.user) {
@@ -309,6 +316,30 @@ export default function AuthPage({
                       className="w-full bg-zinc-950 border border-zinc-700/80 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
+                </div>
+              )}
+
+              {/* Restaurant / Brewery Name input for Sellers */}
+              {mode === 'signup' && role === 'seller' && (
+                <div>
+                  <label className="block text-xs font-bold text-amber-400 mb-1.5 flex items-center gap-1.5">
+                    <Store className="w-3.5 h-3.5" />
+                    <span>Restaurant / Brewery Name *</span>
+                  </label>
+                  <div className="relative">
+                    <Store className="w-4 h-4 text-amber-400 absolute left-3.5 top-3" />
+                    <input
+                      type="text"
+                      required
+                      value={restaurantName}
+                      onChange={(e) => setRestaurantName(e.target.value)}
+                      placeholder="e.g. The Hoppy Keg Taproom"
+                      className="w-full bg-zinc-950 border border-amber-500/50 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 transition-colors"
+                    />
+                  </div>
+                  <p className="text-[10px] text-zinc-400 mt-1">
+                    This will be the public name of your microbrewery or dining spot on HungryBeer.
+                  </p>
                 </div>
               )}
 
