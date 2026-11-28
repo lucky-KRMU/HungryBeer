@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { 
   Beer, 
   MapPin, 
@@ -10,7 +10,8 @@ import {
   Sparkles,
   LogOut,
   Store,
-  Heart
+  Heart,
+  LocateFixed
 } from 'lucide-react';
 import { LOCATIONS } from '../data/mockData';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -29,6 +30,66 @@ export default function Navbar({
   setTheme
 }) {
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [showMobileLocation, setShowMobileLocation] = useState(false);
+  const [locationSearch, setLocationSearch] = useState('');
+  const [selectedCityFilter, setSelectedCityFilter] = useState('All');
+  const [isDetecting, setIsDetecting] = useState(false);
+  const locationRef = useRef(null);
+  const mobileLocationRef = useRef(null);
+
+  // Click outside & Escape key to close location dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (locationRef.current && !locationRef.current.contains(e.target)) {
+        setShowLocationDropdown(false);
+      }
+      if (mobileLocationRef.current && !mobileLocationRef.current.contains(e.target)) {
+        setShowMobileLocation(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowLocationDropdown(false);
+        setShowMobileLocation(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // Filtered locations
+  const cityCategories = ['All', 'Delhi NCR', 'Bengaluru', 'Mumbai', 'Pune', 'Hyderabad', 'Goa', 'Kolkata'];
+
+  const filteredLocations = useMemo(() => {
+    return LOCATIONS.filter((loc) => {
+      const matchesCity = selectedCityFilter === 'All' || loc.state === selectedCityFilter || loc.city.includes(selectedCityFilter);
+      if (!matchesCity) return false;
+
+      if (!locationSearch.trim()) return true;
+      const q = locationSearch.toLowerCase();
+      return (
+        loc.name.toLowerCase().includes(q) ||
+        loc.city.toLowerCase().includes(q) ||
+        loc.area.toLowerCase().includes(q) ||
+        (loc.state && loc.state.toLowerCase().includes(q))
+      );
+    });
+  }, [selectedCityFilter, locationSearch]);
+
+  const handleDetectLocation = () => {
+    setIsDetecting(true);
+    setTimeout(() => {
+      // Pick a popular hub or keep user informed
+      const randomNear = LOCATIONS[Math.floor(Math.random() * 5)];
+      setCurrentLocation(randomNear);
+      setIsDetecting(false);
+      setShowLocationDropdown(false);
+    }, 600);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-[#0d0f12]/95 backdrop-blur-md border-b border-zinc-800/80 shadow-lg">
@@ -72,46 +133,131 @@ export default function Navbar({
           </div>
 
           {/* Center Search & Location Bar (Zomato Style) */}
-          <div className="hidden md:flex items-center flex-1 max-w-2xl bg-zinc-900 border border-zinc-700/70 rounded-xl overflow-hidden shadow-inner focus-within:border-amber-500/80 focus-within:ring-2 focus-within:ring-amber-500/20 transition-all">
+          <div className="hidden md:flex items-center flex-1 max-w-2xl bg-zinc-900 border border-zinc-700/70 rounded-xl shadow-inner focus-within:border-amber-500/80 focus-within:ring-2 focus-within:ring-amber-500/20 transition-all relative">
             
             {/* Location selector */}
-            <div className="relative">
+            <div className="relative" ref={locationRef}>
               <button 
                 type="button"
-                onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="flex items-center gap-2 px-3.5 py-2.5 text-sm text-gray-200 hover:text-amber-400 border-r border-zinc-700/80 bg-zinc-900/50 transition-colors whitespace-nowrap"
+                onClick={() => setShowLocationDropdown((prev) => !prev)}
+                className="flex items-center gap-2 px-3.5 py-2.5 text-sm text-gray-200 hover:text-amber-400 border-r border-zinc-700/80 bg-zinc-900/50 rounded-l-xl transition-colors whitespace-nowrap cursor-pointer select-none"
               >
                 <MapPin className="w-4 h-4 text-red-500 shrink-0" />
-                <span className="font-medium truncate max-w-[120px]">{currentLocation.name}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+                <div className="text-left">
+                  <span className="font-semibold truncate max-w-[130px] block leading-tight">{currentLocation.name}</span>
+                  <span className="text-[10px] text-zinc-400 block truncate max-w-[130px] leading-tight">{currentLocation.city}</span>
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform duration-200 ${showLocationDropdown ? 'rotate-180 text-amber-400' : ''}`} />
               </button>
 
-              {/* Location Dropdown Modal */}
+              {/* Enhanced Location Dropdown Modal */}
               {showLocationDropdown && (
-                <div className="absolute left-0 top-full mt-2 w-64 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl py-2 z-50">
-                  <div className="px-3 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider border-b border-zinc-800">
-                    Select Your City / Area
-                  </div>
-                  {LOCATIONS.map((loc) => (
-                    <button
-                      key={loc.id}
-                      onClick={() => {
-                        setCurrentLocation(loc);
-                        setShowLocationDropdown(false);
-                      }}
-                      className={`w-full text-left px-3.5 py-2 text-sm flex items-center justify-between hover:bg-zinc-800 transition-colors ${
-                        currentLocation.id === loc.id ? 'text-amber-400 font-semibold bg-zinc-800/60' : 'text-gray-300'
-                      }`}
-                    >
-                      <div>
-                        <div className="font-medium">{loc.name}</div>
-                        <div className="text-xs text-zinc-400">{loc.city}</div>
-                      </div>
-                      {currentLocation.id === loc.id && (
-                        <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                <div className={`absolute left-0 top-full mt-2 w-80 sm:w-96 rounded-2xl shadow-2xl border py-2.5 z-[100] animate-in fade-in zoom-in-95 duration-150 ${
+                  theme === 'valentine'
+                    ? 'bg-[#220718] border-rose-800/80 text-rose-100 shadow-rose-950/80'
+                    : theme === 'light'
+                    ? 'bg-white border-slate-300 text-slate-900 shadow-xl'
+                    : 'bg-zinc-900 border-zinc-700 text-gray-100 shadow-black/80'
+                }`}>
+                  {/* Dropdown Header & Search */}
+                  <div className="px-3 pb-2 border-b border-zinc-800/60">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-black uppercase tracking-wider text-zinc-400">
+                        Select Dining & Craft Beer Hub
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono">
+                        {filteredLocations.length} Places
+                      </span>
+                    </div>
+
+                    {/* Location search input */}
+                    <div className="flex items-center bg-zinc-950/80 border border-zinc-700/80 rounded-xl px-2.5 py-1.5 focus-within:border-amber-400">
+                      <Search className="w-3.5 h-3.5 text-zinc-400 mr-2 shrink-0" />
+                      <input
+                        type="text"
+                        value={locationSearch}
+                        onChange={(e) => setLocationSearch(e.target.value)}
+                        placeholder="Search city, area, or hub..."
+                        className="w-full bg-transparent text-xs text-white placeholder-zinc-500 focus:outline-none"
+                      />
+                      {locationSearch && (
+                        <button onClick={() => setLocationSearch('')} className="text-zinc-400 hover:text-white">
+                          <X className="w-3 h-3" />
+                        </button>
                       )}
+                    </div>
+
+                    {/* GPS Detect Button */}
+                    <button
+                      onClick={handleDetectLocation}
+                      disabled={isDetecting}
+                      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 text-xs font-bold border border-amber-500/30 transition-colors cursor-pointer"
+                    >
+                      <LocateFixed className={`w-3.5 h-3.5 ${isDetecting ? 'animate-spin' : ''}`} />
+                      <span>{isDetecting ? 'Detecting nearby hub...' : 'Detect Current Location (GPS)'}</span>
                     </button>
-                  ))}
+
+                    {/* City Filter Pills */}
+                    <div className="flex items-center gap-1 overflow-x-auto no-scrollbar pt-2">
+                      {cityCategories.map((city) => (
+                        <button
+                          key={city}
+                          type="button"
+                          onClick={() => setSelectedCityFilter(city)}
+                          className={`px-2 py-0.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                            selectedCityFilter === city
+                              ? 'bg-amber-400 text-black'
+                              : 'bg-zinc-800/70 text-zinc-400 hover:text-zinc-200'
+                          }`}
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Scrollable Location List */}
+                  <div className="max-h-72 overflow-y-auto py-1 divide-y divide-zinc-800/40">
+                    {filteredLocations.length > 0 ? (
+                      filteredLocations.map((loc) => {
+                        const isCurrent = currentLocation.id === loc.id;
+                        return (
+                          <button
+                            key={loc.id}
+                            type="button"
+                            onClick={() => {
+                              setCurrentLocation(loc);
+                              setShowLocationDropdown(false);
+                            }}
+                            className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                              isCurrent
+                                ? theme === 'valentine'
+                                ? 'bg-rose-900/30 text-rose-300 font-bold border-l-2 border-rose-500'
+                                : 'bg-amber-500/15 text-amber-300 font-bold border-l-2 border-amber-400'
+                                : 'hover:bg-zinc-800/50 text-gray-300'
+                            }`}
+                          >
+                            <div>
+                              <div className="font-semibold text-sm flex items-center gap-1.5">
+                                <MapPin className={`w-3.5 h-3.5 shrink-0 ${isCurrent ? 'text-amber-400' : 'text-zinc-500'}`} />
+                                <span>{loc.name}</span>
+                              </div>
+                              <div className="text-[11px] text-zinc-400 ml-5">
+                                {loc.area} • <span className="text-zinc-500">{loc.city}</span>
+                              </div>
+                            </div>
+                            {isCurrent && (
+                              <span className="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-400 shrink-0"></span>
+                            )}
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <div className="p-4 text-center text-xs text-zinc-500">
+                        No locations matching "{locationSearch}"
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -124,12 +270,13 @@ export default function Navbar({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search for craft beer, burgers, pizza, or dining spots..."
-                className="w-full bg-transparent text-sm text-gray-100 placeholder-zinc-500 focus:outline-none py-2.5"
+                className="w-full bg-transparent text-sm text-gray-100 placeholder-zinc-500 focus:outline-none py-2.5 rounded-r-xl"
               />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
-                  className="text-zinc-400 hover:text-white p-1"
+                  className="text-zinc-400 hover:text-white p-1 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -209,8 +356,114 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Mobile Search input */}
-        <div className="md:hidden pb-3">
+        {/* Mobile Search & Location Bar */}
+        <div className="md:hidden pb-3 space-y-2">
+          {/* Mobile Location Selector Button */}
+          <div className="relative" ref={mobileLocationRef}>
+            <button
+              type="button"
+              onClick={() => setShowMobileLocation((prev) => !prev)}
+              className="w-full flex items-center justify-between px-3.5 py-2 text-xs rounded-xl bg-zinc-900 border border-zinc-700/80 text-gray-200 hover:border-amber-400/50 transition-colors cursor-pointer select-none"
+            >
+              <div className="flex items-center gap-2 truncate">
+                <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                <div className="text-left truncate">
+                  <span className="font-bold text-amber-400 truncate">{currentLocation.name}</span>
+                  <span className="text-zinc-400 text-[10px] ml-1.5">({currentLocation.city})</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-zinc-400 text-[11px] shrink-0 font-medium">
+                <span>Change</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showMobileLocation ? 'rotate-180 text-amber-400' : ''}`} />
+              </div>
+            </button>
+
+            {/* Mobile Dropdown Popup */}
+            {showMobileLocation && (
+              <div className={`absolute left-0 right-0 top-full mt-1.5 rounded-2xl shadow-2xl border py-2.5 z-[100] animate-in fade-in duration-150 ${
+                theme === 'valentine'
+                  ? 'bg-[#220718] border-rose-800 text-rose-100 shadow-rose-950/80'
+                  : theme === 'light'
+                  ? 'bg-white border-slate-300 text-slate-900 shadow-xl'
+                  : 'bg-zinc-900 border-zinc-700 text-gray-100 shadow-black/80'
+              }`}>
+                {/* Search & Location Items */}
+                <div className="px-3 pb-2 border-b border-zinc-800/60">
+                  <div className="flex items-center bg-zinc-950/80 border border-zinc-700/80 rounded-xl px-2.5 py-1.5 focus-within:border-amber-400">
+                    <Search className="w-3.5 h-3.5 text-zinc-400 mr-2 shrink-0" />
+                    <input
+                      type="text"
+                      value={locationSearch}
+                      onChange={(e) => setLocationSearch(e.target.value)}
+                      placeholder="Search city, area, or hub..."
+                      className="w-full bg-transparent text-xs text-white placeholder-zinc-500 focus:outline-none"
+                    />
+                    {locationSearch && (
+                      <button onClick={() => setLocationSearch('')} className="text-zinc-400 hover:text-white">
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                  {/* City Filter Pills */}
+                  <div className="flex items-center gap-1 overflow-x-auto no-scrollbar pt-2">
+                    {cityCategories.map((city) => (
+                      <button
+                        key={city}
+                        type="button"
+                        onClick={() => setSelectedCityFilter(city)}
+                        className={`px-2 py-0.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                          selectedCityFilter === city
+                            ? 'bg-amber-400 text-black'
+                            : 'bg-zinc-800/70 text-zinc-400 hover:text-zinc-200'
+                        }`}
+                      >
+                        {city}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mobile scrollable list */}
+                <div className="max-h-60 overflow-y-auto py-1 divide-y divide-zinc-800/40">
+                  {filteredLocations.map((loc) => {
+                    const isCurrent = currentLocation.id === loc.id;
+                    return (
+                      <button
+                        key={loc.id}
+                        type="button"
+                        onClick={() => {
+                          setCurrentLocation(loc);
+                          setShowMobileLocation(false);
+                        }}
+                        className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                          isCurrent
+                            ? theme === 'valentine'
+                              ? 'bg-rose-900/30 text-rose-300 font-bold border-l-2 border-rose-500'
+                              : 'bg-amber-500/15 text-amber-300 font-bold border-l-2 border-amber-400'
+                            : 'hover:bg-zinc-800/50 text-gray-300'
+                        }`}
+                      >
+                        <div>
+                          <div className="font-semibold text-sm flex items-center gap-1.5">
+                            <MapPin className={`w-3.5 h-3.5 shrink-0 ${isCurrent ? 'text-amber-400' : 'text-zinc-500'}`} />
+                            <span>{loc.name}</span>
+                          </div>
+                          <div className="text-[11px] text-zinc-400 ml-5">
+                            {loc.area} • <span className="text-zinc-500">{loc.city}</span>
+                          </div>
+                        </div>
+                        {isCurrent && (
+                          <span className="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-400 shrink-0"></span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Search input */}
           <div className="flex items-center bg-zinc-900 border border-zinc-700/80 rounded-xl px-3 py-2">
             <Search className="w-4 h-4 text-zinc-400 mr-2 shrink-0" />
             <input

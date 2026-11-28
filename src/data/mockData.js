@@ -1,10 +1,50 @@
 export const LOCATIONS = [
-  { id: 'delhi', name: 'Connaught Place', city: 'New Delhi', area: 'Central Delhi' },
-  { id: 'bangalore', name: 'Indiranagar', city: 'Bengaluru', area: '100ft Road' },
-  { id: 'mumbai', name: 'Bandra West', city: 'Mumbai', area: 'Pali Hill' },
-  { id: 'pune', name: 'Koregaon Park', city: 'Pune', area: 'North Main Road' },
-  { id: 'hyderabad', name: 'Jubilee Hills', city: 'Hyderabad', area: 'Road No. 36' },
-  { id: 'gurgaon', name: 'Sector 29', city: 'Gurugram', area: 'Cyber Hub Area' },
+  // Delhi NCR
+  { id: 'delhi-cp', name: 'Connaught Place', city: 'New Delhi', area: 'Central Delhi', state: 'Delhi NCR' },
+  { id: 'delhi-hkv', name: 'Hauz Khas Village', city: 'New Delhi', area: 'South Delhi (Lake & Fort)', state: 'Delhi NCR' },
+  { id: 'delhi-gk', name: 'Greater Kailash', city: 'New Delhi', area: 'M Block Market', state: 'Delhi NCR' },
+  { id: 'delhi-aerocity', name: 'Aerocity Worldmark', city: 'New Delhi', area: 'Hospitality District', state: 'Delhi NCR' },
+  { id: 'delhi-khan', name: 'Khan Market', city: 'New Delhi', area: 'Central Delhi', state: 'Delhi NCR' },
+  { id: 'gurgaon-s29', name: 'Sector 29', city: 'Gurugram', area: 'Brewery Hub', state: 'Delhi NCR' },
+  { id: 'gurgaon-cyberhub', name: 'DLF CyberHub', city: 'Gurugram', area: 'DLF Phase 2', state: 'Delhi NCR' },
+  { id: 'noida-s18', name: 'Sector 18', city: 'Noida', area: 'Atta Market & Mall Hub', state: 'Delhi NCR' },
+
+  // Bengaluru (The Pub Capital)
+  { id: 'blr-indiranagar', name: 'Indiranagar', city: 'Bengaluru', area: '100ft Road & 12th Main', state: 'Bengaluru' },
+  { id: 'blr-koramangala', name: 'Koramangala', city: 'Bengaluru', area: '5th Block Brewery Strip', state: 'Bengaluru' },
+  { id: 'blr-church', name: 'Church Street', city: 'Bengaluru', area: 'MG Road & Brigade Road', state: 'Bengaluru' },
+  { id: 'blr-whitefield', name: 'Whitefield', city: 'Bengaluru', area: 'ITPL Main Road', state: 'Bengaluru' },
+  { id: 'blr-jpnagar', name: 'JP Nagar', city: 'Bengaluru', area: '24th Main & Outer Ring', state: 'Bengaluru' },
+  { id: 'blr-hsr', name: 'HSR Layout', city: 'Bengaluru', area: 'Sector 1 & 27th Main', state: 'Bengaluru' },
+  { id: 'blr-lavelle', name: 'Lavelle Road', city: 'Bengaluru', area: 'UB City & Vittal Mallya', state: 'Bengaluru' },
+
+  // Mumbai
+  { id: 'mum-bandra', name: 'Bandra West', city: 'Mumbai', area: 'Pali Hill & Linking Road', state: 'Mumbai' },
+  { id: 'mum-lowerparel', name: 'Lower Parel', city: 'Mumbai', area: 'Kamala Mills & Phoenix', state: 'Mumbai' },
+  { id: 'mum-juhu', name: 'Juhu', city: 'Mumbai', area: 'Juhu Tara Road & Beach', state: 'Mumbai' },
+  { id: 'mum-andheri', name: 'Andheri West', city: 'Mumbai', area: 'Lokhandwala Complex', state: 'Mumbai' },
+  { id: 'mum-colaba', name: 'Colaba', city: 'Mumbai', area: 'Causeway & Gateway District', state: 'Mumbai' },
+  { id: 'mum-powai', name: 'Powai', city: 'Mumbai', area: 'Hiranandani Gardens', state: 'Mumbai' },
+
+  // Pune
+  { id: 'pune-kp', name: 'Koregaon Park', city: 'Pune', area: 'North Main Road', state: 'Pune' },
+  { id: 'pune-balewadi', name: 'Balewadi High Street', city: 'Pune', area: 'Baner & Hinjawadi Link', state: 'Pune' },
+  { id: 'pune-kalyani', name: 'Kalyani Nagar', city: 'Pune', area: 'East Avenue', state: 'Pune' },
+  { id: 'pune-fc', name: 'FC Road', city: 'Pune', area: 'Deccan Gymkhana', state: 'Pune' },
+
+  // Hyderabad
+  { id: 'hyd-jubilee', name: 'Jubilee Hills', city: 'Hyderabad', area: 'Road No. 36 & 45', state: 'Hyderabad' },
+  { id: 'hyd-banjara', name: 'Banjara Hills', city: 'Hyderabad', area: 'Road No. 12', state: 'Hyderabad' },
+  { id: 'hyd-gachibowli', name: 'Gachibowli', city: 'Hyderabad', area: 'Financial District', state: 'Hyderabad' },
+  { id: 'hyd-hitec', name: 'Hitec City', city: 'Hyderabad', area: 'Cyber Towers & Inorbit', state: 'Hyderabad' },
+
+  // Goa & Coastal
+  { id: 'goa-anjuna', name: 'Anjuna & Vagator', city: 'Goa', area: 'North Goa Coastline', state: 'Goa' },
+  { id: 'goa-panaji', name: 'Panaji', city: 'Goa', area: 'Fontainhas & Miramar', state: 'Goa' },
+
+  // Kolkata
+  { id: 'kol-parkstreet', name: 'Park Street', city: 'Kolkata', area: 'Central Kolkata Food Walk', state: 'Kolkata' },
+  { id: 'kol-saltlake', name: 'Salt Lake - Sector V', city: 'Kolkata', area: 'Tech Hub & City Centre', state: 'Kolkata' }
 ];
 
 export const CUISINES = [
