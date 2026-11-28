@@ -1,13 +1,22 @@
 # 🍺 HungryBeer - Full MERN Stack Platform
 
-**HungryBeer** is a full-stack MERN (MongoDB, Express, React, Node.js) platform built with **MVC (Model-View-Controller)** architecture in the backend and an energetic **Yellow, Black & Red** themed React frontend celebrating craft brews, microbreweries, and gourmet pub food alongside classic delivery favorites.
+**HungryBeer** is a full-stack MERN (MongoDB, Express, React, Node.js) platform built with **MVC (Model-View-Controller)** architecture in the backend and a responsive **Yellow, Black & Red** themed React frontend (with Dark, Light, and Valentine themes) celebrating craft brews, microbreweries, and gourmet pub food alongside classic delivery favorites.
+
+---
+
+## ✨ Key Features
+
+- **Responsive Frontend UI**: Mobile-first layouts across the feed, navigation bar, restaurant menu & table booking modal, cart drawer, auth views, and seller dashboard (including adaptive card/table views for reservations on mobile vs. desktop).
+- **Authenticated Cart Checkout**: Guests can browse restaurants and add items to their cart, while placing an order from the cart requires logging in or signing up first (preserving cart items across sign-in).
+- **Theme Switcher**: Supports `dark`, `light`, and `valentine` visual themes persisted in `localStorage`.
+- **Role-Based Portals**: Separate buyer experience (delivery, dining out, nightlife, table booking, coupons) and seller portal (`SellerDashboard.jsx`) for managing live orders, menu stock, table reservations, and analytics.
 
 ---
 
 ## 🏛️ System Architecture (MERN + MVC)
 
 ```
-Zomato/
+HungryBeer/
 ├── backend/                       # Dedicated Node.js & Express MVC Backend
 │   ├── config/                    # Database connection (Mongoose)
 │   │   └── db.js
