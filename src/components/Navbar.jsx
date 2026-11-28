@@ -93,31 +93,31 @@ export default function Navbar({
 
   return (
     <header className="sticky top-0 z-40 bg-[#0d0f12]/95 backdrop-blur-md border-b border-zinc-800/80 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
           
           {/* Logo & Brand */}
-          <div className="flex items-center gap-3 cursor-pointer group select-none shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-red-600 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
-              <Beer className="w-7 h-7 text-black stroke-[2.2]" />
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-[#0d0f12] flex items-center justify-center">
+          <div className="flex items-center gap-2 sm:gap-3 cursor-pointer group select-none shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-red-600 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
+              <Beer className="w-5 h-5 sm:w-7 sm:h-7 text-black stroke-[2.2]" />
+              <div className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-red-600 rounded-full border-2 border-[#0d0f12] flex items-center justify-center">
                 <span className="w-1.5 h-1.5 bg-yellow-300 rounded-full animate-ping"></span>
               </div>
             </div>
             
             <div>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
                   Hungry
                   {theme === 'valentine' && (
-                    <span className="mx-1 text-xl animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
+                    <span className="mx-1 text-lg sm:text-xl animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
                       💋
                     </span>
                   )}
                   <span className={theme === 'valentine' ? 'text-rose-400' : 'text-amber-400'}>Beer</span>
                 </span>
               </div>
-              <p className={`text-[11px] font-medium tracking-wide flex items-center gap-1 ${
+              <p className={`text-[11px] font-medium tracking-wide hidden sm:flex items-center gap-1 ${
                 theme === 'valentine' ? 'text-rose-300' : 'text-amber-400/90'
               }`}>
                 {theme === 'valentine' ? (
@@ -285,7 +285,7 @@ export default function Navbar({
           </div>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
             {/* Visual Theme Selector (Dark, Light, Valentine) */}
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
@@ -306,7 +306,7 @@ export default function Navbar({
             {user?.role !== 'seller' && (
               <button
                 onClick={onOpenCart}
-                className="relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-gray-200 border border-zinc-700 hover:border-amber-400/50 transition-all duration-200 group"
+                className="relative flex items-center gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-gray-200 border border-zinc-700 hover:border-amber-400/50 transition-all duration-200 group"
               >
                 <ShoppingBag className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
                 <span className="text-sm font-semibold hidden sm:inline">Cart</span>
@@ -321,8 +321,8 @@ export default function Navbar({
             {/* Auth Button */}
             {user ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900 border border-amber-500/30 text-sm">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-red-500 flex items-center justify-center text-black font-bold text-xs">
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-xl bg-zinc-900 border border-amber-500/30 text-sm">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-red-500 flex items-center justify-center text-black font-bold text-xs shrink-0">
                     {(user?.name || user?.email || 'U').charAt(0).toUpperCase()}
                   </div>
                   <span className="font-medium text-gray-200 hidden sm:inline truncate max-w-[90px]">
@@ -331,23 +331,23 @@ export default function Navbar({
                   <button 
                     onClick={onLogout}
                     title="Log Out"
-                    className="text-zinc-400 hover:text-red-400 p-1 ml-1"
+                    className="text-zinc-400 hover:text-red-400 p-1 ml-0.5 sm:ml-1"
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   onClick={() => onOpenAuth('login')}
-                  className="px-3.5 py-2 text-sm font-semibold text-gray-300 hover:text-amber-400 transition-colors"
+                  className="px-2 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-gray-300 hover:text-amber-400 transition-colors whitespace-nowrap"
                 >
                   Log in
                 </button>
                 <button
                   onClick={() => onOpenAuth('signup')}
-                  className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-red-600 text-black hover:from-amber-300 hover:to-red-500 shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 transition-all"
+                  className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-red-600 text-black hover:from-amber-300 hover:to-red-500 shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 transition-all whitespace-nowrap"
                 >
                   Sign up
                 </button>

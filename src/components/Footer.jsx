@@ -6,7 +6,7 @@ export default function Footer({ theme }) {
   const isValentine = theme === 'valentine';
 
   return (
-    <footer className={`border-t pt-14 pb-8 transition-colors ${
+    <footer className={`border-t pt-10 sm:pt-14 pb-8 transition-colors ${
       isValentine
         ? 'bg-[#0f0209] text-rose-300/80 border-rose-950/80'
         : isLight
@@ -70,7 +70,7 @@ export default function Footer({ theme }) {
         </div>
 
         {/* Links Grid (Zomato Style) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 py-10 text-xs">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 py-8 sm:py-10 text-xs">
           <div>
             <h4 className={`font-extrabold uppercase tracking-wider text-xs mb-3 ${
               isLight ? 'text-slate-900' : 'text-white'

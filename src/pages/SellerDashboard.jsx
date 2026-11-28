@@ -131,46 +131,47 @@ export default function SellerDashboard({ user, onLogout, theme, setTheme }) {
     <div className="min-h-screen bg-[#0a0b0e] text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] flex flex-col">
       
       {/* Top Seller Bar */}
-      <header className="sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20 text-black">
-            <Store className="w-5 h-5 stroke-[2.2]" />
+      <header className="sticky top-0 z-40 bg-zinc-900/95 backdrop-blur-md border-b border-zinc-800 px-3 sm:px-8 py-3 sm:py-3.5 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20 text-black shrink-0">
+            <Store className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-black text-base text-white font-['Cabinet_Grotesk',sans-serif]">
+              <span className="font-black text-sm sm:text-base text-white font-['Cabinet_Grotesk',sans-serif] truncate">
                 {user?.restaurantName || 'The Hoppy Keg Taproom'}
               </span>
-              <span className="text-[10px] bg-amber-400/20 text-amber-400 font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30">
+              <span className="hidden sm:inline-block text-[10px] bg-amber-400/20 text-amber-400 font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30 shrink-0">
                 Seller Portal
               </span>
             </div>
-            <span className="text-[11px] text-zinc-400">
+            <span className="text-[11px] text-zinc-400 truncate block">
               Partner: {user?.name || user?.email || 'Authorized Brewery'} • Connaught Place, Central Delhi
             </span>
           </div>
         </div>
 
         {/* Right Status Switch & Logout */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <ThemeSwitcher theme={theme} setTheme={setTheme} />
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
               isOpen 
                 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' 
                 : 'bg-red-500/20 text-red-400 border border-red-500/40'
             }`}
           >
-            <Power className="w-3.5 h-3.5" />
-            <span>{isOpen ? 'Taproom OPEN' : 'Taproom CLOSED'}</span>
+            <Power className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden sm:inline">{isOpen ? 'Taproom OPEN' : 'Taproom CLOSED'}</span>
+            <span className="sm:hidden">{isOpen ? 'OPEN' : 'CLOSED'}</span>
           </button>
 
           {onLogout && (
             <button
               onClick={onLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 text-xs font-bold transition-all"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-red-500/20 text-zinc-300 hover:text-red-400 border border-zinc-700 hover:border-red-500/30 text-xs font-bold transition-all"
               title="Log Out of Seller Portal"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -325,7 +326,7 @@ export default function SellerDashboard({ user, onLogout, theme, setTheme }) {
         {/* Tab 2: Menu Management */}
         {activeTab === 'menu' && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">Craft Brews & Kitchen Menu</h3>
                 <p className="text-xs text-zinc-400">Manage tap items, toggle live stock status, and add seasonal brews</p>
@@ -333,7 +334,7 @@ export default function SellerDashboard({ user, onLogout, theme, setTheme }) {
 
               <button
                 onClick={() => setShowAddItemModal(true)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black text-xs font-black uppercase tracking-wider hover:from-amber-300 hover:to-amber-400 shadow"
+                className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-black text-xs font-black uppercase tracking-wider hover:from-amber-300 hover:to-amber-400 shadow self-start sm:self-auto shrink-0"
               >
                 <Plus className="w-4 h-4" /> Add Brew or Dish
               </button>
@@ -396,7 +397,37 @@ export default function SellerDashboard({ user, onLogout, theme, setTheme }) {
               <p className="text-xs text-zinc-400">View guest seating requests and confirm brewery slots</p>
             </div>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+            {/* Mobile Card Layout */}
+            <div className="md:hidden space-y-3">
+              {tableBookings.map((b) => (
+                <div key={b.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-2.5 text-xs">
+                  <div className="flex items-center justify-between gap-2 pb-2 border-b border-zinc-800">
+                    <span className="font-mono text-amber-400 font-bold">{b.id}</span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      b.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-800 text-zinc-300'
+                    }`}>
+                      {b.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-white text-sm">{b.guestName}</div>
+                      <div className="text-[11px] text-zinc-400">{b.phone}</div>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-200 font-semibold shrink-0">
+                      {b.guests}
+                    </span>
+                  </div>
+                  <div className="pt-2 border-t border-zinc-800/80 text-zinc-300 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>{b.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table Layout */}
+            <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
               <table className="w-full text-left text-xs">
                 <thead className="bg-zinc-950 text-zinc-400 font-bold border-b border-zinc-800">
                   <tr>

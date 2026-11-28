@@ -41,7 +41,7 @@ export default function OrderSuccessModal({ orderDetails, onClose, restaurant })
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-700 rounded-3xl shadow-2xl overflow-hidden p-6 text-center">
+      <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-700 rounded-3xl shadow-2xl overflow-hidden p-4 sm:p-6 my-auto text-center">
         
         {/* Close Button */}
         <button
@@ -62,7 +62,7 @@ export default function OrderSuccessModal({ orderDetails, onClose, restaurant })
           <CheckCircle className="w-3.5 h-3.5" /> Order Placed & Confirmed!
         </div>
 
-        <h3 className="text-2xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
+        <h3 className="text-xl sm:text-2xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
           Cheers! Your Feast is on the Way
         </h3>
         <p className="text-xs text-zinc-400 mt-1">
@@ -126,19 +126,20 @@ export default function OrderSuccessModal({ orderDetails, onClose, restaurant })
         </div>
 
         {/* Rider card */}
-        <div className="p-3 bg-zinc-950/80 rounded-xl border border-zinc-800 flex items-center justify-between text-left text-xs mb-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-amber-400 font-bold border border-zinc-700">
+        <div className="p-3 bg-zinc-950/80 rounded-xl border border-zinc-800 flex items-center justify-between gap-2 text-left text-xs mb-5">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-amber-400 font-bold border border-zinc-700 shrink-0">
               VS
             </div>
-            <div>
-              <div className="font-bold text-white">Vikram S. (HungryBeer Express)</div>
+            <div className="min-w-0">
+              <div className="font-bold text-white truncate">Vikram S. (HungryBeer Express)</div>
               <div className="text-zinc-400 text-[11px] flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" /> Insulated Beer Pack • Sanitized
+                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                <span className="truncate">Insulated Beer Pack • Sanitized</span>
               </div>
             </div>
           </div>
-          <button className="p-2 rounded-lg bg-zinc-800 text-amber-400 hover:bg-zinc-700 transition-colors">
+          <button className="p-2 rounded-lg bg-zinc-800 text-amber-400 hover:bg-zinc-700 transition-colors shrink-0">
             <PhoneCall className="w-4 h-4" />
           </button>
         </div>

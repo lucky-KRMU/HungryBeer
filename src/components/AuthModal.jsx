@@ -74,7 +74,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onLo
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-3xl shadow-2xl overflow-hidden p-6">
+      <div className="relative w-full max-w-md bg-zinc-900 border border-zinc-700 rounded-3xl shadow-2xl overflow-hidden p-4 sm:p-6 my-auto">
         
         {/* Close Button */}
         <button

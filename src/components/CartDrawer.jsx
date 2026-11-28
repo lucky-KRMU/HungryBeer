@@ -83,15 +83,15 @@ export default function CartDrawer({
       <div className="w-full max-w-md bg-zinc-950 border-l border-zinc-800 h-full flex flex-col shadow-2xl relative">
         
         {/* Drawer Header */}
-        <div className="p-4 border-b border-zinc-800/80 flex items-center justify-between bg-zinc-900/90">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center">
+        <div className="p-4 border-b border-zinc-800/80 flex items-center justify-between gap-2 bg-zinc-900/90">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0">
               <ShoppingBag className="w-4 h-4" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-extrabold text-white text-base">Your Cart</h3>
               {restaurant && (
-                <p className="text-xs text-zinc-400 truncate max-w-[200px]">
+                <p className="text-xs text-zinc-400 truncate max-w-[160px] sm:max-w-[200px]">
                   From: <span className="text-amber-400 font-semibold">{restaurant.name}</span>
                 </p>
               )}
@@ -147,10 +147,10 @@ export default function CartDrawer({
                     key={item.id}
                     className="p-3 rounded-xl bg-zinc-900 border border-zinc-800/80 flex items-center justify-between gap-3"
                   >
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span
-                          className={`w-3 h-3 rounded-xs border flex items-center justify-center ${
+                          className={`w-3 h-3 rounded-xs border flex items-center justify-center shrink-0 ${
                             item.isVeg ? 'border-emerald-500' : 'border-red-600'
                           }`}
                         >
@@ -303,14 +303,14 @@ export default function CartDrawer({
                   </span>
                 </div>
 
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between gap-2 text-zinc-400">
                   <span>Restaurant Packaging & Platform</span>
-                  <span>₹{platformFee}</span>
+                  <span className="shrink-0">₹{platformFee}</span>
                 </div>
 
-                <div className="flex justify-between text-zinc-400">
+                <div className="flex justify-between gap-2 text-zinc-400">
                   <span>Govt. Taxes & GST (5%)</span>
-                  <span>₹{taxes}</span>
+                  <span className="shrink-0">₹{taxes}</span>
                 </div>
 
                 {discount > 0 && (

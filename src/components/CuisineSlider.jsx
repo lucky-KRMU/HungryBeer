@@ -35,7 +35,7 @@ export default function CuisineSlider({ selectedCuisine, onSelectCuisine }) {
                 className="flex flex-col items-center group text-center focus:outline-none"
               >
                 <div 
-                  className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden p-1 transition-all duration-300 ${
+                  className={`w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden p-1 transition-all duration-300 ${
                     isSelected 
                       ? 'ring-4 ring-amber-400 shadow-lg shadow-amber-400/30 scale-105' 
                       : 'hover:ring-2 hover:ring-amber-400/60 group-hover:scale-105'

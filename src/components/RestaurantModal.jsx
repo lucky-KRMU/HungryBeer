@@ -64,7 +64,7 @@ export default function RestaurantModal({
         </button>
 
         {/* Modal Hero Banner */}
-        <div className="relative h-56 sm:h-64 w-full shrink-0">
+        <div className="relative h-48 sm:h-64 w-full shrink-0">
           <img
             src={restaurant.image}
             alt={restaurant.name}
@@ -73,31 +73,31 @@ export default function RestaurantModal({
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent"></div>
 
           {/* Banner Details */}
-          <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="bg-red-600 text-white text-[11px] font-black px-2 py-0.5 rounded uppercase">
+          <div className="absolute bottom-3 sm:bottom-4 left-4 right-4 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-3">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                <span className="bg-red-600 text-white text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded uppercase">
                   Verified Brewery & Kitchen
                 </span>
                 {restaurant.hasBeer && (
-                  <span className="bg-amber-400 text-black text-[11px] font-black px-2 py-0.5 rounded flex items-center gap-1">
+                  <span className="bg-amber-400 text-black text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded flex items-center gap-1">
                     <Beer className="w-3 h-3" /> Craft On Tap
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white font-['Cabinet_Grotesk',sans-serif]">
+              <h2 className="text-xl sm:text-3xl font-black text-white font-['Cabinet_Grotesk',sans-serif] truncate">
                 {restaurant.name}
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-300">
+              <p className="text-xs sm:text-sm text-zinc-300 truncate">
                 {restaurant.cuisines.join(' • ')}
               </p>
             </div>
 
             {/* Rating & Reviews */}
             <div className="flex items-center gap-2 shrink-0">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-extrabold text-sm shadow">
+              <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs sm:text-sm shadow">
                 <span>{restaurant.rating}</span>
-                <Star className="w-4 h-4 fill-current" />
+                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
               </div>
               <div className="text-left text-xs text-zinc-400">
                 <div className="font-bold text-white">{restaurant.reviewsCount}</div>
@@ -108,32 +108,32 @@ export default function RestaurantModal({
         </div>
 
         {/* Secondary Info Bar */}
-        <div className="px-6 py-3 bg-zinc-950 border-b border-zinc-800 flex flex-wrap items-center justify-between text-xs text-zinc-400 gap-3">
-          <div className="flex items-center gap-4 flex-wrap">
+        <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 border-b border-zinc-800 flex flex-wrap items-center justify-between text-xs text-zinc-400 gap-x-4 gap-y-1.5">
+          <div className="flex items-center gap-x-4 gap-y-1.5 flex-wrap">
             <span className="flex items-center gap-1 text-zinc-300">
-              <MapPin className="w-3.5 h-3.5 text-red-500" />
-              {restaurant.address}
+              <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+              <span>{restaurant.address}</span>
             </span>
             <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              {restaurant.timings}
+              <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>{restaurant.timings}</span>
             </span>
             <span className="flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5 text-zinc-400" />
-              {restaurant.phone}
+              <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+              <span>{restaurant.phone}</span>
             </span>
           </div>
 
-          <div className="font-semibold text-amber-400">
+          <div className="font-semibold text-amber-400 shrink-0">
             ₹{restaurant.priceForTwo} for two
           </div>
         </div>
 
         {/* Modal Tabs (Menu vs Table Booking) */}
-        <div className="px-6 border-b border-zinc-800 flex items-center gap-6 bg-zinc-900">
+        <div className="px-4 sm:px-6 border-b border-zinc-800 flex items-center gap-4 sm:gap-6 bg-zinc-900 overflow-x-auto no-scrollbar shrink-0">
           <button
             onClick={() => setActiveTab('menu')}
-            className={`py-3.5 text-sm font-bold border-b-2 transition-colors ${
+            className={`py-3 sm:py-3.5 text-xs sm:text-sm font-bold border-b-2 transition-colors whitespace-nowrap shrink-0 ${
               activeTab === 'menu'
                 ? 'border-amber-400 text-amber-400'
                 : 'border-transparent text-zinc-400 hover:text-white'
@@ -143,7 +143,7 @@ export default function RestaurantModal({
           </button>
           <button
             onClick={() => setActiveTab('book')}
-            className={`py-3.5 text-sm font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
+            className={`py-3 sm:py-3.5 text-xs sm:text-sm font-bold border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               activeTab === 'book'
                 ? 'border-amber-400 text-amber-400'
                 : 'border-transparent text-zinc-400 hover:text-white'
@@ -182,11 +182,11 @@ export default function RestaurantModal({
                   return (
                     <div
                       key={item.id}
-                      className="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-start justify-between gap-4 hover:border-zinc-700 transition-all"
+                      className="p-3 sm:p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-start justify-between gap-3 sm:gap-4 hover:border-zinc-700 transition-all"
                     >
                       {/* Left: Info */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                           {/* Veg/NonVeg Indicator */}
                           <span
                             className={`w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 ${
@@ -229,11 +229,11 @@ export default function RestaurantModal({
                       </div>
 
                       {/* Right: Image & Add to Cart button */}
-                      <div className="relative w-28 h-28 shrink-0 flex flex-col items-center">
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex flex-col items-center">
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="w-full h-24 object-cover rounded-xl border border-zinc-800 shadow"
+                          className="w-full h-20 sm:h-24 object-cover rounded-xl border border-zinc-800 shadow"
                         />
 
                         {/* Add / Stepper Button */}
@@ -241,7 +241,7 @@ export default function RestaurantModal({
                           {qty === 0 ? (
                             <button
                               onClick={() => onAddToCart(item, restaurant)}
-                              className="px-5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-black text-xs shadow-lg uppercase tracking-wider transition-all active:scale-95 flex items-center gap-1"
+                              className="px-4 sm:px-5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-black text-xs shadow-lg uppercase tracking-wider transition-all active:scale-95 flex items-center gap-1"
                             >
                               <Plus className="w-3.5 h-3.5" /> Add
                             </button>
@@ -289,7 +289,7 @@ export default function RestaurantModal({
                     Booking ID: <span className="font-mono text-zinc-200">HB-TBL-{Math.floor(100000 + Math.random() * 900000)}</span>
                   </p>
 
-                  <div className="mt-6 flex justify-center gap-3">
+                  <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
                     <button
                       onClick={() => setBookingConfirmed(false)}
                       className="px-4 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-zinc-300 hover:text-white"
@@ -305,7 +305,7 @@ export default function RestaurantModal({
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleBookTable} className="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 space-y-4">
+                <form onSubmit={handleBookTable} className="bg-zinc-900 p-4 sm:p-6 rounded-2xl border border-zinc-800 space-y-4">
                   <div>
                     <h3 className="text-lg font-black text-white">
                       Reserve a Table & Draft Experience

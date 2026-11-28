@@ -111,26 +111,27 @@ export default function AuthPage({
     <div className="min-h-screen bg-[#0a0b0e] flex flex-col justify-between text-gray-100 font-['Plus_Jakarta_Sans',sans-serif]">
       
       {/* Top Floating Bar */}
-      <nav className="p-4 sm:p-6 max-w-7xl w-full mx-auto flex items-center justify-between">
+      <nav className="p-3 sm:p-6 max-w-7xl w-full mx-auto flex items-center justify-between gap-2">
         <button
           onClick={onBackToHome}
-          className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-400 hover:text-amber-400 transition-colors bg-zinc-900/80 px-3.5 py-2 rounded-xl border border-zinc-800"
+          className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold text-zinc-400 hover:text-amber-400 transition-colors bg-zinc-900/80 px-3 sm:px-3.5 py-2 rounded-xl border border-zinc-800 shrink-0"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to HungryBeer</span>
+          <span className="hidden sm:inline">Back to HungryBeer</span>
+          <span className="sm:hidden">Back</span>
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <ThemeSwitcher theme={theme} setTheme={setTheme} />
 
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onBackToHome}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20">
-              <Beer className="w-6 h-6 text-black stroke-[2.2]" />
+          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" onClick={onBackToHome}>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-md shadow-amber-500/20">
+              <Beer className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[2.2]" />
             </div>
-            <span className="text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
+            <span className="text-lg sm:text-xl font-black text-white font-['Cabinet_Grotesk',sans-serif] flex items-center">
               Hungry
               {theme === 'valentine' && (
-                <span className="mx-1 text-lg animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
+                <span className="mx-1 text-base sm:text-lg animate-pulse select-none inline-block filter drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" role="img" aria-label="Kiss" title="Happy Valentine's! 💋">
                   💋
                 </span>
               )}
@@ -141,7 +142,7 @@ export default function AuthPage({
       </nav>
 
       {/* Main Container: Split Hero & Dedicated Form */}
-      <div className="max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-12 my-auto">
+      <div className="max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 my-auto">
         
         {/* Left Side: Brand Story & Member Perks */}
         <div className="lg:w-1/2 space-y-6 text-center lg:text-left">
@@ -262,7 +263,7 @@ export default function AuthPage({
 
             {/* Account Type Selector for Sign Up */}
             {mode === 'signup' && (
-              <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-4 text-xs font-bold">
+              <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 mb-4 text-[11px] sm:text-xs font-bold">
                 <button
                   type="button"
                   onClick={() => setRole('buyer')}
