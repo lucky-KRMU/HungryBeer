@@ -2,9 +2,6 @@ import Order from '../../models/Order.js';
 import TableBooking from '../../models/TableBooking.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Get seller business analytics (Revenue, Orders, Bookings, Top Items)
-// @route   GET /api/seller/analytics
-// @access  Private (Seller)
 export const getSellerAnalytics = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -18,7 +15,6 @@ export const getSellerAnalytics = async (req, res, next) => {
     const orders = await Order.find({ restaurantId: restaurant._id });
     const tableBookings = await TableBooking.find({ restaurantId: restaurant._id });
 
-    // Compute metrics
     const totalOrders = orders.length;
     const completedOrders = orders.filter(o => o.orderStatus === 'Delivered').length;
     const totalRevenue = orders
@@ -28,7 +24,6 @@ export const getSellerAnalytics = async (req, res, next) => {
     const pendingOrders = orders.filter(o => ['Placed', 'Accepted', 'Preparing'].includes(o.orderStatus)).length;
     const totalBookings = tableBookings.length;
 
-    // Top selling items
     const itemCounts = {};
     orders.forEach(order => {
       if (order.orderStatus !== 'Cancelled') {

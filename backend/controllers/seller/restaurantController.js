@@ -1,8 +1,5 @@
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Get seller's restaurant profile
-// @route   GET /api/seller/restaurant
-// @access  Private (Seller)
 export const getMyRestaurant = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -22,15 +19,11 @@ export const getMyRestaurant = async (req, res, next) => {
   }
 };
 
-// @desc    Create or update seller's restaurant profile
-// @route   POST /api/seller/restaurant
-// @access  Private (Seller)
 export const createOrUpdateRestaurant = async (req, res, next) => {
   try {
     let restaurant = await Restaurant.findOne({ sellerId: req.user.id });
 
     if (restaurant) {
-      // Update existing
       restaurant = await Restaurant.findOneAndUpdate(
         { sellerId: req.user.id },
         { ...req.body },
@@ -43,7 +36,6 @@ export const createOrUpdateRestaurant = async (req, res, next) => {
       });
     }
 
-    // Create new
     restaurant = await Restaurant.create({
       ...req.body,
       sellerId: req.user.id
@@ -59,9 +51,6 @@ export const createOrUpdateRestaurant = async (req, res, next) => {
   }
 };
 
-// @desc    Toggle restaurant open/closed status for orders
-// @route   PUT /api/seller/restaurant/toggle-status
-// @access  Private (Seller)
 export const toggleOpenStatus = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });

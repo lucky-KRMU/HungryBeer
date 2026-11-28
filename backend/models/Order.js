@@ -98,8 +98,8 @@ const OrderSchema = new mongoose.Schema(
     },
     riderDetails: {
       name: { type: String, default: 'Vikram S.' },
-      phone: { type: String, default: '+91 98765 12345' },
-      vehicle: { type: String, default: 'Electric Scooter (Insulated Beer Box)' }
+      phone: { type: String, default: '+91 98765 22110' },
+      vehicle: { type: String, default: 'Electric Scooter (DL-08-EV-4412)' }
     }
   },
   { timestamps: true }

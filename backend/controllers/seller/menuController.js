@@ -1,9 +1,6 @@
 import MenuItem from '../../models/MenuItem.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Get all menu items for the seller's restaurant
-// @route   GET /api/seller/menu
-// @access  Private (Seller)
 export const getSellerMenu = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -26,9 +23,6 @@ export const getSellerMenu = async (req, res, next) => {
   }
 };
 
-// @desc    Add a new menu item / brew to seller's restaurant
-// @route   POST /api/seller/menu
-// @access  Private (Seller)
 export const addMenuItem = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -71,9 +65,6 @@ export const addMenuItem = async (req, res, next) => {
   }
 };
 
-// @desc    Update a menu item
-// @route   PUT /api/seller/menu/:id
-// @access  Private (Seller)
 export const updateMenuItem = async (req, res, next) => {
   try {
     const item = await MenuItem.findById(req.params.id);
@@ -99,9 +90,6 @@ export const updateMenuItem = async (req, res, next) => {
   }
 };
 
-// @desc    Delete a menu item
-// @route   DELETE /api/seller/menu/:id
-// @access  Private (Seller)
 export const deleteMenuItem = async (req, res, next) => {
   try {
     const item = await MenuItem.findById(req.params.id);
@@ -123,9 +111,6 @@ export const deleteMenuItem = async (req, res, next) => {
   }
 };
 
-// @desc    Toggle item stock status (In stock / Sold out)
-// @route   PUT /api/seller/menu/:id/toggle-stock
-// @access  Private (Seller)
 export const toggleItemStock = async (req, res, next) => {
   try {
     const item = await MenuItem.findById(req.params.id);

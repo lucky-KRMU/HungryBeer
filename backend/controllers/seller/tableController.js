@@ -1,9 +1,6 @@
 import TableBooking from '../../models/TableBooking.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Get all table reservations for the seller's taproom / brewery
-// @route   GET /api/seller/tables
-// @access  Private (Seller)
 export const getSellerTableBookings = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -26,9 +23,6 @@ export const getSellerTableBookings = async (req, res, next) => {
   }
 };
 
-// @desc    Update table reservation status (Confirmed, Completed, Cancelled)
-// @route   PUT /api/seller/tables/:id/status
-// @access  Private (Seller)
 export const updateTableBookingStatus = async (req, res, next) => {
   try {
     const { status } = req.body;

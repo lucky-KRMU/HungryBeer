@@ -1,9 +1,6 @@
 import Review from '../../models/Review.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Add review for a restaurant
-// @route   POST /api/buyer/reviews
-// @access  Private (Buyer)
 export const addReview = async (req, res, next) => {
   try {
     const { restaurantId, rating, comment } = req.body;
@@ -31,7 +28,6 @@ export const addReview = async (req, res, next) => {
       comment
     });
 
-    // Recompute restaurant rating
     const allReviews = await Review.find({ restaurantId });
     const avgRating = (
       allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length
@@ -51,9 +47,6 @@ export const addReview = async (req, res, next) => {
   }
 };
 
-// @desc    Get all reviews for a restaurant
-// @route   GET /api/buyer/reviews/:restaurantId
-// @access  Public
 export const getRestaurantReviews = async (req, res, next) => {
   try {
     const reviews = await Review.find({ restaurantId: req.params.restaurantId }).sort({ createdAt: -1 });

@@ -1,9 +1,6 @@
 import TableBooking from '../../models/TableBooking.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Reserve a table at a brewery or restaurant
-// @route   POST /api/buyer/tables
-// @access  Private (Buyer)
 export const bookTable = async (req, res, next) => {
   try {
     const {
@@ -57,9 +54,6 @@ export const bookTable = async (req, res, next) => {
   }
 };
 
-// @desc    Get buyer's table bookings
-// @route   GET /api/buyer/tables
-// @access  Private (Buyer)
 export const getMyBookings = async (req, res, next) => {
   try {
     const bookings = await TableBooking.find({ buyerId: req.user.id }).sort({ createdAt: -1 });

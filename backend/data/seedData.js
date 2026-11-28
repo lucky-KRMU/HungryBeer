@@ -128,15 +128,13 @@ const seedData = async () => {
   try {
     const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hungrybeer';
     await mongoose.connect(mongoUri);
-    console.log('[Seed] Connected to MongoDB for seeding...');
+    console.log('Connected to MongoDB for seeding');
 
-    // Clear existing
     await User.deleteMany();
     await Restaurant.deleteMany();
     await MenuItem.deleteMany();
     await Order.deleteMany();
 
-    // Create Demo Buyer
     const buyer = await User.create({
       name: 'Rohan Sharma (Buyer)',
       email: 'buyer@hungrybeer.com',
@@ -145,7 +143,6 @@ const seedData = async () => {
       role: 'buyer'
     });
 
-    // Create Demo Seller
     const seller = await User.create({
       name: 'Vikram Mehta (Brewmaster & Seller)',
       email: 'seller@hungrybeer.com',
@@ -154,11 +151,10 @@ const seedData = async () => {
       role: 'seller'
     });
 
-    console.log('[Seed] Created Demo Users:');
-    console.log('       Buyer:  buyer@hungrybeer.com  / password123');
-    console.log('       Seller: seller@hungrybeer.com / password123');
+    console.log('Created Demo Users:');
+    console.log('Buyer:  buyer@hungrybeer.com  / password123');
+    console.log('Seller: seller@hungrybeer.com / password123');
 
-    // Create Restaurants & Menu Items
     for (const b of sampleBreweries) {
       const { menu, ...restData } = b;
       const restaurant = await Restaurant.create({
@@ -174,11 +170,11 @@ const seedData = async () => {
       }
     }
 
-    console.log('[Seed] Created sample restaurants and craft brew menus.');
-    console.log('[Seed] Database seeded successfully! 🍻');
+    console.log('Created sample restaurants and menus');
+    console.log('Database seeded successfully');
     process.exit(0);
   } catch (error) {
-    console.error(`[Seed Error] ${error.message}`);
+    console.error(`Seed error: ${error.message}`);
     process.exit(1);
   }
 };

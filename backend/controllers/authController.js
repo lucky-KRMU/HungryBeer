@@ -1,9 +1,6 @@
 import User from '../models/User.js';
 import Restaurant from '../models/Restaurant.js';
 
-// @desc    Register a new user (buyer or seller)
-// @route   POST /api/auth/register
-// @access  Public
 export const registerUser = async (req, res, next) => {
   try {
     const { name, email, password, phone, role, restaurantName } = req.body;
@@ -42,7 +39,6 @@ export const registerUser = async (req, res, next) => {
       restaurantName: trimmedRestName
     });
 
-    // If seller, automatically initialize their Restaurant profile in MongoDB
     if (assignedRole === 'seller' && trimmedRestName) {
       try {
         await Restaurant.create({
@@ -55,7 +51,7 @@ export const registerUser = async (req, res, next) => {
           isDining: true
         });
       } catch (restErr) {
-        console.warn('Auto-create restaurant note:', restErr.message);
+        console.warn('Failed to auto-create restaurant profile:', restErr.message);
       }
     }
 
@@ -80,9 +76,6 @@ export const registerUser = async (req, res, next) => {
   }
 };
 
-// @desc    Login user & get JWT token
-// @route   POST /api/auth/login
-// @access  Public
 export const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -131,9 +124,6 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-// @desc    Get current user profile
-// @route   GET /api/auth/me
-// @access  Private
 export const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -146,9 +136,6 @@ export const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Update current user profile
-// @route   PUT /api/auth/profile
-// @access  Private
 export const updateProfile = async (req, res, next) => {
   try {
     const fieldsToUpdate = {};

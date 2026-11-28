@@ -1,9 +1,6 @@
 import Order from '../../models/Order.js';
 import Restaurant from '../../models/Restaurant.js';
 
-// @desc    Get all incoming and past customer orders for the seller's kitchen
-// @route   GET /api/seller/orders
-// @access  Private (Seller)
 export const getSellerOrders = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({ sellerId: req.user.id });
@@ -30,9 +27,6 @@ export const getSellerOrders = async (req, res, next) => {
   }
 };
 
-// @desc    Update customer order status (Accepted, Preparing, Out for Delivery, Delivered, Cancelled)
-// @route   PUT /api/seller/orders/:id/status
-// @access  Private (Seller)
 export const updateOrderStatus = async (req, res, next) => {
   try {
     const { status } = req.body;

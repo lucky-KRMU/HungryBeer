@@ -1,15 +1,12 @@
 import Restaurant from '../../models/Restaurant.js';
 import MenuItem from '../../models/MenuItem.js';
 
-// @desc    Browse & search restaurants with filtering & sorting
-// @route   GET /api/buyer/restaurants
-// @access  Public
 export const getAllRestaurants = async (req, res, next) => {
   try {
     const {
       search,
       cuisine,
-      tab, // 'delivery', 'dining', 'nightlife'
+      tab,
       beerOnly,
       vegOnly,
       happyHourOnly,
@@ -20,23 +17,19 @@ export const getAllRestaurants = async (req, res, next) => {
 
     const query = { isOpen: true };
 
-    // Tab filtering
     if (tab === 'dining') query.isDining = true;
     if (tab === 'nightlife') query.isNightlife = true;
 
-    // Feature toggles
     if (beerOnly === 'true') query.hasBeer = true;
     if (vegOnly === 'true') query.isVeg = true;
     if (happyHourOnly === 'true') query.hasHappyHour = true;
     if (expressOnly === 'true') query.isExpress = true;
     if (rating) query.rating = { $gte: Number(rating) };
 
-    // Cuisine filtering
     if (cuisine) {
       query.cuisines = { $regex: cuisine, $options: 'i' };
     }
 
-    // Text search in name or cuisines
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -46,12 +39,10 @@ export const getAllRestaurants = async (req, res, next) => {
       ];
     }
 
-    // Sorting
-    let sortOptions = {};
+    let sortOptions = { rating: -1, createdAt: -1 };
     if (sortBy === 'rating') sortOptions = { rating: -1 };
-    else if (sortBy === 'cost_asc') sortOptions = { priceForTwo: 1 };
-    else if (sortBy === 'cost_desc') sortOptions = { priceForTwo: -1 };
-    else sortOptions = { rating: -1, createdAt: -1 }; // default popularity
+    if (sortBy === 'cost_asc') sortOptions = { priceForTwo: 1 };
+    if (sortBy === 'cost_desc') sortOptions = { priceForTwo: -1 };
 
     const restaurants = await Restaurant.find(query).sort(sortOptions);
 
@@ -65,9 +56,6 @@ export const getAllRestaurants = async (req, res, next) => {
   }
 };
 
-// @desc    Get single restaurant profile + full menu
-// @route   GET /api/buyer/restaurants/:id
-// @access  Public
 export const getRestaurantById = async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findById(req.params.id);
